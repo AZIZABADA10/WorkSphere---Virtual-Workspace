@@ -1,6 +1,8 @@
 const modal = document.getElementById('modalFormAjoute');
 const zoneListeExperiences = document.getElementById('listeExperiences');
 const zoneEmployeListe = document.getElementById('zoneEmployeListe');
+const zoneListeEmployeesNonAssignes = document.getElementById('zoneListeEmployeesNonAssignes');
+
 
 function fermerModal() {
     modal.classList.add('hidden');
@@ -9,43 +11,6 @@ function fermerModal() {
 function afficherModal() {
     modal.classList.remove('hidden');
 }
-
-
-/**La form dyniamique  **/
-let indexExper = 1;
-zoneListeExperiences.innerHTML = ``;
-function ajouterZoneExper() {
-
-    const experItem = document.createElement('div');
-    experItem.id = `ex${indexExper}`;
-    experItem.classList.add('bg-white', 'bg-opacity-30', 'elementExperience', 'p-2', 'rounded', 'm-2');
-    experItem.innerHTML = `
-    <h1 class="text-white font-semibold">Experiences ${indexExper} </h1>
-    <div  class="flex flex-col gap-2 border-1 border-gray-400">
-    <label class="font-bold font-white">Intitulé de poste: </label>
-    <input type="text" class="titreEx rounded"> 
-    <label class="font-bold font-white">Entreprise: </label>
-    <input type="text" class="EntrepriseEx rounded">
-    <label class="font-bold font-white">Description:</label>
-    <textarea name="" class="discriptionEx rounded"></textarea>
-    <label class="font-bold font-white">Date Début:</label>
-    <input type="date" class="dateDebutEx rounded">
-    <label class="font-bold font-white">Date Fin:</label>
-    <input type="date" class="dateFinEx rounded">
-    <div class="flex justify-end mr-1">
-    <button onclick="supprimerExper('ex${indexExper}')"><i class='bx  bx-trash text-red-600'></i> </button>
-    </div>
-    </div>
-    `;
-    zoneListeExperiences.appendChild(experItem);
-    indexExper++;
-
-
-}
-
-const Employees = [];
-const Experiences = [];
-let id = 1;
 
 /**La récuperation des donnée a partire de la formulaire **/
 const formAjoute = document.getElementById('formAjoute');
@@ -124,7 +89,45 @@ formAjoute.addEventListener('submit', (e) => {
     id++;
     formAjoute.reset();
     modal.classList.add('hidden');
+    afficherEmployesNonAssignes();
 });
+
+/**La form dyniamique  **/
+let indexExper = 1;
+zoneListeExperiences.innerHTML = ``;
+function ajouterZoneExper() {
+
+    const experItem = document.createElement('div');
+    experItem.id = `ex${indexExper}`;
+    experItem.classList.add('bg-white', 'bg-opacity-30', 'elementExperience', 'p-2', 'rounded', 'm-2');
+    experItem.innerHTML = `
+    <h1 class="text-white font-semibold">Experiences ${indexExper} </h1>
+    <div  class="flex flex-col gap-2 border-1 border-gray-400">
+    <label class="font-bold font-white">Intitulé de poste: </label>
+    <input type="text" class="titreEx rounded"> 
+    <label class="font-bold font-white">Entreprise: </label>
+    <input type="text" class="EntrepriseEx rounded">
+    <label class="font-bold font-white">Description:</label>
+    <textarea name="" class="discriptionEx rounded"></textarea>
+    <label class="font-bold font-white">Date Début:</label>
+    <input type="date" class="dateDebutEx rounded">
+    <label class="font-bold font-white">Date Fin:</label>
+    <input type="date" class="dateFinEx rounded">
+    <div class="flex justify-end mr-1">
+    <button onclick="supprimerExper('ex${indexExper}')"><i class='bx  bx-trash text-red-600'></i> </button>
+    </div>
+    </div>
+    `;
+    zoneListeExperiences.appendChild(experItem);
+    indexExper++;
+
+
+}
+
+const Employees = [];
+const Experiences = [];
+let id = 1;
+
 
 function supprimerExper(idExperAsupprimer) {
     const elementExperience = document.querySelectorAll('.elementExperience');
@@ -142,3 +145,61 @@ function supprimerExper(idExperAsupprimer) {
 
 }
 
+/**
+https://i.pravatar.cc/150?img=1
+https://i.pravatar.cc/150?img=2
+https://i.pravatar.cc/150?img=3
+https://i.pravatar.cc/150?img=4
+https://images.unsplash.com/photo-1502685104226-ee32379fefbe?crop=faces&fit=crop&h=200&w=200
+https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?crop=faces&fit=crop&h=200&w=200
+
+
+ */
+
+function afficherEmployesNonAssignes() {
+    const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees')) || [];
+
+    zoneListeEmployeesNonAssignes.innerHTML = ``;
+
+    if (listEmployeeNonAssignee.length > 0) {
+        listEmployeeNonAssignee.forEach(element => {
+
+            const cartEmployye = document.createElement('div');
+            cartEmployye.classList.add('bg-white', 'rounded', 'p-2', 'm-2')
+            cartEmployye.innerHTML = `
+             <div class="flex ">
+                <img src="${element.url}"  class="w-8 h-8 rounded-full">
+                
+                <h4 class="ml-1 font-semibold">${element.nom}</h4>
+            </div>
+            <div class="flex justify-between">
+                <p class="bg-orange-600 rounded mt-1 px-1">${element.localisationActuelle}</p>
+                <button onclick="supprimerEmployee('${element.id}')" ><i class='bx  bx-trash text-red-600'></i></button>
+            </div>
+        `;
+            zoneListeEmployeesNonAssignes.appendChild(cartEmployye);
+        });
+    } else {
+        const auccuneEmployees = document.createElement('div');
+        auccuneEmployees.innerHTML = `
+        <p class="text-red-700 font-bold p-4 lg:mt-56">Auccun Employees a été ajouter pour le moment</p>
+        `;
+        zoneListeEmployeesNonAssignes.appendChild(auccuneEmployees);
+    }
+    console.log(listEmployeeNonAssignee);
+}
+
+
+
+function supprimerEmployee(idEmployeAsupprimer) {
+    const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees'));
+    const indexEmployeeAsupprimer = listEmployeeNonAssignee.findIndex(emp => emp.id === idEmployeAsupprimer);
+    listEmployeeNonAssignee.splice(indexEmployeeAsupprimer,1);
+    localStorage.setItem('Employees',JSON.stringify(listEmployeeNonAssignee));
+    afficherEmployesNonAssignes(); 
+};
+
+
+
+
+afficherEmployesNonAssignes();
