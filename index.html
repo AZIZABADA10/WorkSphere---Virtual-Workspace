@@ -5,18 +5,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkSphere</title>
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body >
-    
+<body class="grid grid-cols-6 h-full lg:grid-cols-8">
+    <header class="col-span-6 lg:col-span-8 flex justify-between bg-blue-900 h-12 items-center">
+        <h1 class="text-white font-bold ml-4 text-xl">WorkSphere</h1>
+        <button onclick="afficherModal()"
+            class="bg-black text-white py-1 px-2 mr-2 rounded-sm hover:bg-green-700 "><span class="text-xl">+</span>
+            Ajouter
+            Employé</button>
+    </header>
     <main>
+        <div id="modalFormAjoute"
+            class=" fixed inset-0 bg-gray-400 bg-opacity-60 flex flex-col gap-4 items-center justify-center z-50">
+            <div class=" bg-blue-900 p-4 rounded md:p-6 
+            hover:bg-blue-800 hover:scale-105
+            transition ease-linear duration-200
+            overflow-y-auto
+            w-1/3
+            
+            ">
+                <div class="flex justify-between text-white md:mb-4">
+                    <h2 class="underline font-semibold  ">Ajouter Employé</h2>
+                    <button onclick="fermerModal()">X</button>
+                </div>
+                <form id="formAjoute" class="w-full">
+                    <label>Nom:</label><br>
+                    <input type="text" id="nomEmp" class="w-full rounded h-8"><br>
+                    <label for="">Role:</label><br>
+                    <select name="" id="role" class="w-full rounded h-8">
+                        <option value="Réceptionniste">Réceptionniste</option>
+                        <option value="Technicien IT">Technicien IT</option>
+                        <option value="Agent de sécurité">Agent de sécurité</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Personnel de nettoyage">Personnel de nettoyage</option>
+                        <option value="Autre">Autre</option>
+                    </select><br>
+                    <label for="">Email:</label><br>
+                    <input type="email" id="email" class="w-full rounded h-8"><br>
+                    <label for="">Téléphone:</label><br>
+                    <input type="tel" id="tele" class="w-full rounded h-8"><br>
+
+                    <label>localisation actuelle:</label><br>
+                    <input type="text" id="localisationEmp" class="w-full rounded h-8"><br>
+                    <label>Url:</label><br>
+                    <input type="text" id="urlEmp" class="w-full rounded h-8 mb-1"><br>
+                    <div id="listeExperiences">
+
+                    </div>
+                    <button type="button" onclick="ajouterZoneExper()"
+                        class="bg-black text-white  my-2 px-2 py-1 rounded w-2/3 hover:bg-green-600 hover:shadow">Ajouter
+                        Expériences</button>
+                    <button type="submit"
+                        class="bg-black text-white px-4 py-2 rounded w-full font-semibold hover:bg-green-700">Ajouter
+                        Employé</button>
+
+                </form>
+            </div>
+        </div>
         <aside>
+           
         </aside>
         <article>
         </article>
     </main>
+    <script src="main.js"></script>
 </body>
 
 </html>
