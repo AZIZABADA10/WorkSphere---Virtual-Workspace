@@ -17,7 +17,7 @@ zoneListeExperiences.innerHTML = ``;
 function ajouterZoneExper() {
 
     const experItem = document.createElement('div');
-    experItem.id=`ex${indexExper}`;
+    experItem.id = `ex${indexExper}`;
     experItem.classList.add('bg-white', 'bg-opacity-30', 'elementExperience', 'p-2', 'rounded', 'm-2');
     experItem.innerHTML = `
     <h1 class="text-white font-semibold">Experiences ${indexExper} </h1>
@@ -52,15 +52,40 @@ const formAjoute = document.getElementById('formAjoute');
 formAjoute.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const nomEmp = document.getElementById('nomEmp').value;
-    const roleEmp = document.getElementById('role').value;
-    const emailEmp = document.getElementById('email').value;
-    const teleEmp = document.getElementById('tele').value;
-    const localisationEmp = document.getElementById('localisationEmp').value;
-    const urlEmp = document.getElementById('urlEmp').value;
+    const nomEmp = document.getElementById('nomEmp').value.trim();
+    const roleEmp = document.getElementById('role').value.trim();
+    const emailEmp = document.getElementById('email').value.trim();
+    const teleEmp = document.getElementById('tele').value.trim();
+    const localisationEmp = document.getElementById('localisationEmp').value.trim();
+    const urlEmp = document.getElementById('urlEmp').value.trim();
+
+    /**La validation des inputs */
+
+    const nomRegex = /^[a-zA-Z\s]{2,50}$/;
+    const regexNom = document.getElementById('regexNom');
+    regexNom.innerHTML = ''
+    if (!nomRegex.test(nomEmp)) {
+        regexNom.innerHTML = `<p class="text-red-600">Le nom doit etre avec les caractaire</p>`;
+        return;
+    };
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/;
+    const regexEmail = document.getElementById('regexEmail');
+    regexEmail.innerHTML = '';
+    if (!emailRegex.test(emailEmp)) {
+        regexEmail.innerHTML = `<p class="text-red-600">Il faut Récepcter le norme d'un email !</p>`;
+        return;
+    };
+
+    const teleRegex = /^(06|05)\d{8}$/;
+    const regexTele = document.getElementById('regexTele');
+    regexTele.innerHTML = '';
+    if (!teleRegex.test(teleEmp)) {
+        regexTele.innerHTML = `<p class="text-red-600">Le numéro doit contenir 10 chiffres et commencer par 06 ou 05 !</p>`;
+        return;
+    }
 
     const elementExperience = document.querySelectorAll('.elementExperience');
-
     elementExperience.forEach(element => {
 
         const titreEx = element.querySelector('.titreEx').value.trim();
@@ -68,6 +93,9 @@ formAjoute.addEventListener('submit', (e) => {
         const dateDebutEx = element.querySelector('.dateDebutEx').value.trim();
         const dateFinEx = element.querySelector('.dateFinEx').value.trim();
         const EntrepriseEx = document.querySelector('.EntrepriseEx');
+
+
+
 
         const experienceElement = {
             id: indexExper,
@@ -104,13 +132,13 @@ function supprimerExper(idExperAsupprimer) {
     elementExperience.forEach(element => {
         //console.log(element.id);
         //console.log( idExperAsupprimer);
-        
+
         if (element.id === idExperAsupprimer) {
             document.getElementById(idExperAsupprimer).remove();
             //console.log(element.id === idExperAsupprimer);
         }
     });;
-    
+
 
 }
 
