@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body class="grid grid-cols-6 h-full lg:grid-cols-8">
@@ -18,14 +19,15 @@
     </header>
     <main>
         <div id="modalFormAjoute"
-            class=" fixed inset-0 bg-gray-400 bg-opacity-60 flex flex-col gap-4 items-center justify-center z-50">
-            <div class=" bg-blue-900 p-4 rounded md:p-6 
-            hover:bg-blue-800 hover:scale-105
+            class="hidden fixed inset-0 bg-gray-400 bg-opacity-60 flex flex-col gap-4 items-center justify-center z-50">
+            <div class=" bg-blue-600 p-4 rounded md:p-6 
+            hover:bg-blue-500 hover:scale-105
             transition ease-linear duration-200
             overflow-y-auto
             w-1/3
             
             ">
+            
                 <div class="flex justify-between text-white md:mb-4">
                     <h2 class="underline font-semibold  ">Ajouter Employé</h2>
                     <button onclick="fermerModal()">X</button>
@@ -33,6 +35,7 @@
                 <form id="formAjoute" class="w-full">
                     <label>Nom:</label><br>
                     <input type="text" id="nomEmp" class="w-full rounded h-8"><br>
+                    <span id="regexNom"></span>
                     <label for="">Role:</label><br>
                     <select name="" id="role" class="w-full rounded h-8">
                         <option value="Réceptionniste">Réceptionniste</option>
@@ -43,9 +46,11 @@
                         <option value="Autre">Autre</option>
                     </select><br>
                     <label for="">Email:</label><br>
-                    <input type="email" id="email" class="w-full rounded h-8"><br>
+                    <input type="text" id="email" class="w-full rounded h-8"><br>
+                    <span id="regexEmail"></span>
                     <label for="">Téléphone:</label><br>
                     <input type="tel" id="tele" class="w-full rounded h-8"><br>
+                    <span id="regexTele"></span>
 
                     <label>localisation actuelle:</label><br>
                     <input type="text" id="localisationEmp" class="w-full rounded h-8"><br>
