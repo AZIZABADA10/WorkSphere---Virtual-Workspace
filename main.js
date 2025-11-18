@@ -180,6 +180,7 @@ function afficherEmployesNonAssignes() {
             zoneListeEmployeesNonAssignes.appendChild(cartEmployye);
         });
     } else {
+
         const auccuneEmployees = document.createElement('div');
         auccuneEmployees.innerHTML = `
         <p class="text-red-700 font-bold p-4 lg:mt-56">Auccun Employees a été ajouter pour le moment</p>
@@ -194,10 +195,13 @@ function afficherEmployesNonAssignes() {
 function supprimerEmployee(idEmployeAsupprimer) {
     const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees'));
     const indexEmployeeAsupprimer = listEmployeeNonAssignee.findIndex(emp => emp.id === idEmployeAsupprimer);
-    listEmployeeNonAssignee.splice(indexEmployeeAsupprimer,1);
-    localStorage.setItem('Employees',JSON.stringify(listEmployeeNonAssignee));
-    afficherEmployesNonAssignes(); 
+    listEmployeeNonAssignee.splice(indexEmployeeAsupprimer, 1);
+    localStorage.setItem('Employees', JSON.stringify(listEmployeeNonAssignee));
+    afficherEmployesNonAssignes();
 };
+
+
+
 
 
 
