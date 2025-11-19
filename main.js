@@ -57,8 +57,7 @@ formAjoute.addEventListener('submit', (e) => {
         const discriptionEx = element.querySelector('.discriptionEx').value.trim();
         const dateDebutEx = element.querySelector('.dateDebutEx').value.trim();
         const dateFinEx = element.querySelector('.dateFinEx').value.trim();
-        const EntrepriseEx = document.querySelector('.EntrepriseEx');
-
+        const EntrepriseEx = document.querySelector('.EntrepriseEx').value.trim();
 
 
 
