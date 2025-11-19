@@ -190,7 +190,6 @@ function afficherEmployesNonAssignes() {
 }
 
 
-
 function supprimerEmployee(idEmployeAsupprimer) {
     const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees'));
     const indexEmployeeAsupprimer = listEmployeeNonAssignee.findIndex(emp => emp.id === idEmployeAsupprimer);
