@@ -2,7 +2,7 @@ const modal = document.getElementById('modalFormAjoute');
 const zoneListeExperiences = document.getElementById('listeExperiences');
 const zoneEmployeListe = document.getElementById('zoneEmployeListe');
 const zoneListeEmployeesNonAssignes = document.getElementById('zoneListeEmployeesNonAssignes');
-
+const imageProfile = document.getElementById('imageProfile');
 
 function fermerModal() {
     modal.classList.add('hidden');
@@ -23,6 +23,20 @@ formAjoute.addEventListener('submit', (e) => {
     const teleEmp = document.getElementById('tele').value.trim();
     const localisationEmp = document.getElementById('localisationEmp').value.trim();
     const urlEmp = document.getElementById('urlEmp').value.trim();
+    const inputUrl = document.getElementById('urlEmp');
+    inputUrl.addEventListener('input', () => {
+        const url = inputUrl.value.trim();
+
+        if (url) {
+            imageProfile.setAttribute('src', url);
+            imageProfile.classList.remove('hidden');
+        } else {
+            imageProfile.setAttribute('src', "");
+            imageProfile.classList.remove('hidden');
+        }
+
+    });
+
 
     /**La validation des inputs */
 
@@ -87,9 +101,16 @@ formAjoute.addEventListener('submit', (e) => {
     localStorage.setItem('Employees', JSON.stringify(Employees));
     id++;
     formAjoute.reset();
+    imageProfile.src="../assets/iconParDefaut.png";
     modal.classList.add('hidden');
     afficherEmployesNonAssignes();
 });
+
+
+
+
+
+
 
 /**La form dyniamique  **/
 let indexExper = 1;
@@ -167,7 +188,7 @@ function afficherEmployesNonAssignes() {
             cartEmployye.classList.add('bg-white', 'rounded', 'p-2', 'm-2')
             cartEmployye.innerHTML = `
              <div class="flex ">
-                <img src="${element.url}"  class="w-8 h-8 rounded-full">
+                <img src="${element.url?element.url:"../assets/iconParDefaut.png"}"  class="w-8 h-8 rounded-full">
                 
                 <h4 class="ml-1 font-semibold">${element.nom}</h4>
             </div>
