@@ -64,6 +64,7 @@ formAjoute.addEventListener('submit', (e) => {
         return;
     }
 
+
     const elementExperience = document.querySelectorAll('.elementExperience');
     elementExperience.forEach(element => {
 
@@ -156,6 +157,7 @@ function supprimerExper(idExperAsupprimer) {
         }
     });;
 
+    indexExper--;
 
 }
 
@@ -204,7 +206,6 @@ function afficherEmployesNonAssignes() {
     console.log(listEmployeeNonAssignee);
 }
 
-
 function supprimerEmployee(idEmployeAsupprimer) {
     const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees'));
     const indexEmployeeAsupprimer = listEmployeeNonAssignee.findIndex(emp => emp.id === idEmployeAsupprimer);
@@ -212,11 +213,5 @@ function supprimerEmployee(idEmployeAsupprimer) {
     localStorage.setItem('Employees', JSON.stringify(listEmployeeNonAssignee));
     afficherEmployesNonAssignes();
 };
-
-
-
-
-
-
 
 afficherEmployesNonAssignes();
