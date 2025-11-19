@@ -9,35 +9,34 @@
     <link href='https://cdn.boxicons.com/3.0.3/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body class="grid grid-cols-6 h-full lg:grid-cols-8">
-    <header class="col-span-6 lg:col-span-8 flex justify-between bg-blue-900 h-12 items-center">
-        <h1 class="text-white font-bold ml-4 text-xl">WorkSphere</h1>
+<body class="grid grid-cols-6 h-screen lg:grid-cols-9 grid-rows-10 min-w[500px]">
+    <header
+        class="col-span-6 lg:col-span-9 flex justify-between bg-blue-900 row-span-1  items-center border-b-2 border-black">
+        <h1 class="text-white font-bold ml-4 text-2xl">WorkSphere</h1>
         <button onclick="afficherModal()"
-            class="bg-black text-white py-1 px-2 mr-2 rounded-sm hover:bg-green-700 "><span class="text-xl">+</span>
+            class="bg-black text-white px-2 md:py-1 mr-2 rounded-sm hover:bg-green-700  "><span class="text-xl">+</span>
             Ajouter
             Employé</button>
     </header>
-    <main>
+    <main class="col-span-6 grid-rows-8 h-full lg:col-span-9 grid grid-cols-6 lg:grid-cols-9 row-span-9 ">
         <div id="modalFormAjoute"
             class="hidden fixed inset-0 bg-gray-400 bg-opacity-60 flex flex-col gap-4 items-center justify-center z-50">
-            <div class=" bg-blue-600 p-4 rounded md:p-6 
-            hover:bg-blue-500 hover:scale-105
-            transition ease-linear duration-200
-            overflow-y-auto
-            w-1/3
-            
-            ">
-            
-                <div class="flex justify-between text-white md:mb-4">
+            <div
+                class=" bg-blue-600 p-2 rounded md:p-6  hover:bg-blue-500 hover:scale-105 transition ease-linear duration-200 overflow-y-auto w-1/4 min-w-[209px] lg:min-w-[420px]">
+
+                <div class="flex justify-between text-white">
                     <h2 class="underline font-semibold  ">Ajouter Employé</h2>
                     <button onclick="fermerModal()">X</button>
                 </div>
-                <form id="formAjoute" class="w-full">
+                <div>
+                    <img src="/assets/iconParDefaut.png" id="imageProfile" class="w-12 h-12 rounded-full mt-1" alt="d">
+                </div>
+                <form id="formAjoute">
                     <label>Nom:</label><br>
-                    <input type="text" id="nomEmp" class="w-full rounded h-8"><br>
+                    <input type="text" id="nomEmp" class="md:w-full rounded lg:h-8"><br>
                     <span id="regexNom"></span>
                     <label for="">Role:</label><br>
-                    <select name="" id="role" class="w-full rounded h-8">
+                    <select name="" id="role" class="md:w-full rounded lg:h-8">
                         <option value="Réceptionniste">Réceptionniste</option>
                         <option value="Technicien IT">Technicien IT</option>
                         <option value="Agent de sécurité">Agent de sécurité</option>
@@ -46,34 +45,91 @@
                         <option value="Autre">Autre</option>
                     </select><br>
                     <label for="">Email:</label><br>
-                    <input type="text" id="email" class="w-full rounded h-8"><br>
+                    <input type="text" id="email" class="md:w-full rounded lg:h-8"><br>
                     <span id="regexEmail"></span>
                     <label for="">Téléphone:</label><br>
-                    <input type="tel" id="tele" class="w-full rounded h-8"><br>
+                    <input type="tel" id="tele" class="md:w-full rounded lg:h-8"><br>
                     <span id="regexTele"></span>
 
                     <label>localisation actuelle:</label><br>
-                    <input type="text" id="localisationEmp" class="w-full rounded h-8"><br>
+                    <input type="text" id="localisationEmp" class="md:w-full rounded lg:h-8"><br>
                     <label>Url:</label><br>
-                    <input type="text" id="urlEmp" class="w-full rounded h-8 mb-1"><br>
+
+                    <input type="text" id="urlEmp" class="md:w-full rounded lg:h-8 mb-1"><br>
                     <div id="listeExperiences">
 
                     </div>
                     <button type="button" onclick="ajouterZoneExper()"
-                        class="bg-black text-white  my-2 px-2 py-1 rounded w-2/3 hover:bg-green-600 hover:shadow">Ajouter
+                        class="bg-black text-white  my-2 px-1 py-1 rounded  hover:bg-green-600 hover:shadow">Ajouter
                         Expériences</button>
                     <button type="submit"
-                        class="bg-black text-white px-4 py-2 rounded w-full font-semibold hover:bg-green-700">Ajouter
+                        class="bg-black text-white lg:px-4 lg:py-2 rounded w-full font-semibold hover:bg-green-700">Ajouter
                         Employé</button>
 
                 </form>
             </div>
         </div>
-        <aside>
-           
+        <aside
+            class="col-span-6 bg-blue-900 row-span-2 border-r-2 border-black lg:col-span-2 lg:h-screen lg:order-1 order-2 ">
+            <h2 class="hidden md:block lg:block  text-white font-bold ml-2 underline">Employés non assignée</h2>
+            <div id="zoneListeEmployeesNonAssignes"
+                class="overflow-x-auto flex flex-row lg:flex-col   lg:overflow-y-auto lg:h-full">
+
+            </div>
         </aside>
-        <article>
+        <article
+            class="bg-gray-400 p-2 row-span-6 col-span-6 order-1 lg:row-span-8  lg:col-span-7 lg:order-2 grid grid-cols-6 grid-rows-6">
+            <div class="col-span-6 row-span-6 grid grid-cols-6 grid-rows-7 gap-2">
+                <div class="col-span-6 row-span-3 grid grid-cols-8 grid-rows-4 ">
+                    <div
+                        class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed p-4 rounded text-center ">
+                        Salle de conférence <br>
+                        <button><i class='bxr  bx-user-plus text-green-600'></i></button>
+                    </div>
+                    <div class="col-span-1 "></div>
+                    <div class="col-span-3 row-span-4 grid grid-cols-4 grid-rows-4 gap-2">
+                        <div
+                            class="bg-yellow-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center ">
+                            Salle des serveurs <br>
+                            <button><i class='bxr  bx-user-plus text-green-600'></i></button>
+                        </div>
+                        <div
+                            class="bg-yellow-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center">
+                            Salle de sécurité <br>
+                            <button><i class='bxr  bx-user-plus text-green-600'></i></button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row-span-1">
+
+                </div>
+                <div class="col-span-6 row-span-3 grid grid-cols-8 grid-rows-4 ">
+                    <div
+                        class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed p-4 rounded text-center">
+                        Réception <br>
+                        <button><i class='bxr  bx-user-plus text-green-600'></i></button>
+
+                    </div>
+                    <div class="col-span-1 "></div>
+                    <div class="col-span-3 row-span-4 grid grid-cols-4 grid-rows-4 gap-2">
+                        <div
+                            class="bg-red-300 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center">
+                            Salle du personnel <br>
+                            <button><i class='bxr  bx-user-plus text-green-600'></i></button>
+
+                        </div>
+                        <div
+                            class="bg-red-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center">
+                            Salle d'archives <br>
+                            <button><i class='bxr  bx-user-plus text-green-600'></i></button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </article>
+
     </main>
     <script src="main.js"></script>
 </body>

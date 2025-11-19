@@ -1,6 +1,8 @@
 const modal = document.getElementById('modalFormAjoute');
 const zoneListeExperiences = document.getElementById('listeExperiences');
 const zoneEmployeListe = document.getElementById('zoneEmployeListe');
+const zoneListeEmployeesNonAssignes = document.getElementById('zoneListeEmployeesNonAssignes');
+const imageProfile = document.getElementById('imageProfile');
 
 function fermerModal() {
     modal.classList.add('hidden');
@@ -10,6 +12,99 @@ function afficherModal() {
     modal.classList.remove('hidden');
 }
 
+/**La récuperation des donnée a partire de la formulaire **/
+const formAjoute = document.getElementById('formAjoute');
+formAjoute.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nomEmp = document.getElementById('nomEmp').value.trim();
+    const roleEmp = document.getElementById('role').value.trim();
+    const emailEmp = document.getElementById('email').value.trim();
+    const teleEmp = document.getElementById('tele').value.trim();
+    const localisationEmp = document.getElementById('localisationEmp').value.trim();
+    const urlEmp = document.getElementById('urlEmp').value.trim();
+    const inputUrl = document.getElementById('urlEmp');
+    inputUrl.addEventListener('input', () => {
+        const url = inputUrl.value.trim();
+
+        if (url) {
+            imageProfile.setAttribute('src', url);
+            imageProfile.classList.remove('hidden');
+        } else {
+            imageProfile.setAttribute('src', "");
+            imageProfile.classList.remove('hidden');
+        }
+
+    });
+
+
+    /**La validation des inputs */
+
+    const nomRegex = /^[a-zA-Z\s]{2,50}$/;
+    const regexNom = document.getElementById('regexNom');
+    regexNom.innerHTML = ''
+    if (!nomRegex.test(nomEmp)) {
+        regexNom.innerHTML = `<p class="text-red-600">Le nom doit etre avec les caractaire</p>`;
+        return;
+    };
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/;
+    const regexEmail = document.getElementById('regexEmail');
+    regexEmail.innerHTML = '';
+    if (!emailRegex.test(emailEmp)) {
+        regexEmail.innerHTML = `<p class="text-red-600">Il faut Récepcter le norme d'un email !</p>`;
+        return;
+    };
+
+    const teleRegex = /^(06|05)\d{8}$/;
+    const regexTele = document.getElementById('regexTele');
+    regexTele.innerHTML = '';
+    if (!teleRegex.test(teleEmp)) {
+        regexTele.innerHTML = `<p class="text-red-600">Le numéro doit contenir 10 chiffres et commencer par 06 ou 05 !</p>`;
+        return;
+    }
+
+    const elementExperience = document.querySelectorAll('.elementExperience');
+    elementExperience.forEach(element => {
+
+        const titreEx = element.querySelector('.titreEx').value.trim();
+        const discriptionEx = element.querySelector('.discriptionEx').value.trim();
+        const dateDebutEx = element.querySelector('.dateDebutEx').value.trim();
+        const dateFinEx = element.querySelector('.dateFinEx').value.trim();
+        const EntrepriseEx = document.querySelector('.EntrepriseEx').value.trim();
+
+
+
+        const experienceElement = {
+            id: indexExper,
+            titreEx: titreEx,
+            discriptionEx: discriptionEx,
+            dateDebutEx: dateDebutEx,
+            dateFinEx: dateFinEx,
+            EntrepriseEx: EntrepriseEx
+        }
+        Experiences.push(experienceElement);
+    });
+
+    const Employe = {
+        id: id,
+        nom: nomEmp,
+        role: roleEmp,
+        email: emailEmp,
+        telephone: teleEmp,
+        localisationActuelle: localisationEmp,
+        url: urlEmp,
+        Experiences
+    };
+
+    Employees.push(Employe);
+    localStorage.setItem('Employees', JSON.stringify(Employees));
+    id++;
+    formAjoute.reset();
+    imageProfile.src="../assets/iconParDefaut.png";
+    modal.classList.add('hidden');
+    afficherEmployesNonAssignes();
+});
 
 /**La form dyniamique  **/
 let indexExper = 1;
@@ -47,84 +142,6 @@ const Employees = [];
 const Experiences = [];
 let id = 1;
 
-/**La récuperation des donnée a partire de la formulaire **/
-const formAjoute = document.getElementById('formAjoute');
-formAjoute.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const nomEmp = document.getElementById('nomEmp').value.trim();
-    const roleEmp = document.getElementById('role').value.trim();
-    const emailEmp = document.getElementById('email').value.trim();
-    const teleEmp = document.getElementById('tele').value.trim();
-    const localisationEmp = document.getElementById('localisationEmp').value.trim();
-    const urlEmp = document.getElementById('urlEmp').value.trim();
-
-    /**La validation des inputs */
-
-    const nomRegex = /^[a-zA-Z\s]{2,50}$/;
-    const regexNom = document.getElementById('regexNom');
-    regexNom.innerHTML = ''
-    if (!nomRegex.test(nomEmp)) {
-        regexNom.innerHTML = `<p class="text-red-600">Le nom doit etre avec les caractaire</p>`;
-        return;
-    };
-
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/;
-    const regexEmail = document.getElementById('regexEmail');
-    regexEmail.innerHTML = '';
-    if (!emailRegex.test(emailEmp)) {
-        regexEmail.innerHTML = `<p class="text-red-600">Il faut Récepcter le norme d'un email !</p>`;
-        return;
-    };
-
-    const teleRegex = /^(06|05)\d{8}$/;
-    const regexTele = document.getElementById('regexTele');
-    regexTele.innerHTML = '';
-    if (!teleRegex.test(teleEmp)) {
-        regexTele.innerHTML = `<p class="text-red-600">Le numéro doit contenir 10 chiffres et commencer par 06 ou 05 !</p>`;
-        return;
-    }
-
-    const elementExperience = document.querySelectorAll('.elementExperience');
-    elementExperience.forEach(element => {
-
-        const titreEx = element.querySelector('.titreEx').value.trim();
-        const discriptionEx = element.querySelector('.discriptionEx').value.trim();
-        const dateDebutEx = element.querySelector('.dateDebutEx').value.trim();
-        const dateFinEx = element.querySelector('.dateFinEx').value.trim();
-        const EntrepriseEx = document.querySelector('.EntrepriseEx');
-
-
-
-
-        const experienceElement = {
-            id: indexExper,
-            titreEx: titreEx,
-            discriptionEx: discriptionEx,
-            dateDebutEx: dateDebutEx,
-            dateFinEx: dateFinEx,
-            EntrepriseEx: EntrepriseEx
-        }
-        Experiences.push(experienceElement);
-    });
-
-    const Employe = {
-        id: id,
-        nom: nomEmp,
-        role: roleEmp,
-        email: emailEmp,
-        telephone: teleEmp,
-        localisationActuelle: localisationEmp,
-        url: urlEmp,
-        Experiences
-    };
-
-    Employees.push(Employe);
-    localStorage.setItem('Employees', JSON.stringify(Employees));
-    id++;
-    formAjoute.reset();
-    modal.classList.add('hidden');
-});
 
 function supprimerExper(idExperAsupprimer) {
     const elementExperience = document.querySelectorAll('.elementExperience');
@@ -142,3 +159,64 @@ function supprimerExper(idExperAsupprimer) {
 
 }
 
+/**
+https://i.pravatar.cc/150?img=1
+https://i.pravatar.cc/150?img=2
+https://i.pravatar.cc/150?img=3
+https://i.pravatar.cc/150?img=4
+https://images.unsplash.com/photo-1502685104226-ee32379fefbe?crop=faces&fit=crop&h=200&w=200
+https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?crop=faces&fit=crop&h=200&w=200
+
+
+ */
+
+function afficherEmployesNonAssignes() {
+    const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees')) || [];
+
+    zoneListeEmployeesNonAssignes.innerHTML = ``;
+
+    if (listEmployeeNonAssignee.length > 0) {
+        listEmployeeNonAssignee.forEach(element => {
+
+            const cartEmployye = document.createElement('div');
+            cartEmployye.classList.add('bg-white', 'rounded', 'p-2', 'm-2')
+            cartEmployye.innerHTML = `
+             <div class="flex ">
+                <img src="${element.url?element.url:"../assets/iconParDefaut.png"}"  class="w-8 h-8 rounded-full">
+                
+                <h4 class="ml-1 font-semibold">${element.nom}</h4>
+            </div>
+            <div class="flex justify-between">
+                <p class="bg-orange-600 rounded mt-1 px-1">${element.localisationActuelle}</p>
+                <button onclick="supprimerEmployee('${element.id}')" ><i class='bx  bx-trash text-red-600'></i></button>
+            </div>
+        `;
+            zoneListeEmployeesNonAssignes.appendChild(cartEmployye);
+        });
+    } else {
+
+        const auccuneEmployees = document.createElement('div');
+        auccuneEmployees.innerHTML = `
+        <p class="text-red-700 font-bold p-4 lg:mt-56">Auccun Employees a été ajouter pour le moment</p>
+        `;
+        zoneListeEmployeesNonAssignes.appendChild(auccuneEmployees);
+    }
+    console.log(listEmployeeNonAssignee);
+}
+
+
+function supprimerEmployee(idEmployeAsupprimer) {
+    const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees'));
+    const indexEmployeeAsupprimer = listEmployeeNonAssignee.findIndex(emp => emp.id === idEmployeAsupprimer);
+    listEmployeeNonAssignee.splice(indexEmployeeAsupprimer, 1);
+    localStorage.setItem('Employees', JSON.stringify(listEmployeeNonAssignee));
+    afficherEmployesNonAssignes();
+};
+
+
+
+
+
+
+
+afficherEmployesNonAssignes();
