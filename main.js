@@ -106,12 +106,6 @@ formAjoute.addEventListener('submit', (e) => {
     afficherEmployesNonAssignes();
 });
 
-
-
-
-
-
-
 /**La form dyniamique  **/
 let indexExper = 1;
 zoneListeExperiences.innerHTML = ``;
