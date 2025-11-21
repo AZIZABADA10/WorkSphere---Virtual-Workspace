@@ -29,7 +29,8 @@
                     <button onclick="fermerModal()">X</button>
                 </div>
                 <div>
-                    <img src="/assets/iconParDefaut.png" id="imageProfile" class="w-12 h-12 rounded-full mt-1" alt="d">
+                    <img src="../assets/iconParDefaut.png" id="imageProfile" class="w-12 h-12 rounded-full mt-1"
+                        alt="d">
                 </div>
                 <form id="formAjoute">
                     <label>Nom:</label><br>
@@ -77,26 +78,29 @@
             <div class="col-span-6 row-span-6 grid grid-cols-6 grid-rows-7 gap-2">
                 <div class="col-span-6 row-span-3 grid grid-cols-8 grid-rows-4 ">
                     <div
-                        class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed p-4 rounded text-center ">
-                        Salle de conférence <br>
-                        <button onclick="ouvrirListeEmployes('zone_de_conference')"><i class='bxr  bx-user-plus text-green-600'></i></button>
-                        <div id="zone_de_conference"></div>
+                        class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed  rounded text-center ">
+                        Salle de conférence
+                        <button onclick="ouvrirListeEmployes('zone_de_conference')"><i
+                                class='bxr  bx-user-plus text-green-600'></i></button>
+                        <div id="zone_de_conference"
+                            class="flex flex-row lg:flex-col min-h-[40px] lg:min-h-[340px] overflow-x-auto lg:overflow-y-auto">
+                        </div>
                     </div>
                     <div class="col-span-1 "></div>
                     <div class="col-span-3 row-span-4 grid grid-cols-4 grid-rows-4 gap-2">
                         <div
-                            class="bg-yellow-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center ">
-                            Salle des serveurs <br>
+                            class="bg-yellow-200 border-2 border-gray-500 border-dashed rounded col-span-2 row-span-4 text-center ">
+                            Salle des serveurs
                             <button onclick="ouvrirListeEmployes('zone_de_serveurs')"><i
                                     class='bxr  bx-user-plus text-green-600'></i></button>
-                            <div id="zone_de_serveurs"></div>
+                            <div id="zone_de_serveurs" class="flex flex-rox lg:flex lg:flex-col"></div>
                         </div>
                         <div
-                            class="bg-yellow-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center">
-                            Salle de sécurité <br>
+                            class="bg-yellow-200 border-2 border-gray-500 border-dashed  rounded col-span-2 row-span-4 text-center">
+                            Salle de sécurité
                             <button onclick="ouvrirListeEmployes('zone_de_securite')"><i
                                     class='bxr  bx-user-plus text-green-600'></i></button>
-                            <div id="zone_de_securite"></div>
+                            <div id="zone_de_securite" class="flex flex-rox lg:flex lg:flex-col"></div>
 
                         </div>
                     </div>
@@ -106,29 +110,29 @@
                 </div>
                 <div class="col-span-6 row-span-3 grid grid-cols-8 grid-rows-4 ">
                     <div
-                        class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed p-4 rounded text-center">
-                        Réception <br>
+                        class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed rounded text-center">
+                        Réception
                         <button onclick="ouvrirListeEmployes('zone_de_reception')"><i
-                                class='bxr  bx-user-plus text-green-600'></i></button>
-                        <div id="zone_de_reception"></div>
+                                class='bxr  bx-user-plus text-green-600 '></i></button>
+                        <div id="zone_de_reception" class="flex flex-rox lg:flex lg:flex-col"></div>
 
                     </div>
                     <div class="col-span-1 "></div>
                     <div class="col-span-3 row-span-4 grid grid-cols-4 grid-rows-4 gap-2">
                         <div
-                            class="bg-yellow-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center">
-                            Salle du personnel <br>
+                            class=" bg-yellow-200 border-2 border-gray-500 border-dashed rounded col-span-2 row-span-4 text-center">
+                            Salle personnel
                             <button onclick="ouvrirListeEmployes('zone_du_personnel')"><i
                                     class='bxr  bx-user-plus text-green-600'></i></button>
-                            <div id="zone_du_personnel"></div>
+                            <div id="zone_du_personnel" class="flex flex-rox lg:flex lg:flex-col"></div>
 
                         </div>
                         <div
-                            class="bg-yellow-200 border-2 border-gray-500 border-dashed p-4 rounded col-span-2 row-span-4 text-center">
-                            Salle d'archives <br>
+                            class="bg-yellow-200 border-2 border-gray-500 border-dashed rounded col-span-2 row-span-4 text-center">
+                            Salle d'archives
                             <button onclick="ouvrirListeEmployes('zone_d_archives')"><i
                                     class='bxr  bx-user-plus text-green-600'></i></button>
-                            <div id="zone_d_archives"></div>
+                            <div id="zone_d_archives" class="flex flex-rox lg:flex lg:flex-col"></div>
 
                         </div>
                     </div>
