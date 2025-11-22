@@ -131,8 +131,7 @@ function ajouterZoneExperiences() {
     `;
 
     listeExperiences.appendChild(experElement);
-
-d);
+    ;
 }
 /**confirmation et validation de experience */
 function confermerExperElement(idExperElementAConfermier) {
@@ -245,30 +244,22 @@ function affichierEmployeesSurNonAssigne() {
 
         employeesE.forEach(e => {
             const carteEmplo = document.createElement('div');
-            carteEmplo.classList.add('bg-white', 'rounded', 'p-1', 'm-2')
+            carteEmplo.classList.add('bg-white', 'rounded', 'p-1', 'm-1')
             carteEmplo.innerHTML = `
                 <div class="flex bg-white ">
-                <img src="${e.url}" class="w-8 h-8 rounded-full">
-                <h4 class="ml-1 font-semibold">${e.nom}</h4>
+                <img src="${e.url}" class="w-10 h-10 rounded-full">
+                <div class="ml-2">
+                    <h4 class="font-semibold">${e.nom}</h4>
+                    <p class="text-gray-500">${e.role}</p>
                 </div>
-                <div class="flex justify-between">
-                    <p class="bg-orange-600 rounded mt-1 px-1">${e.role}</p>
                 </div>
+                
             `;
             zoneListeEmployeesNonAssignes.appendChild(carteEmplo);
         });
     }
 }
 
-/** les role possible achaque zone */
-const regleDassignment = {
-    zone_de_conference: ['Manager', 'Personnel de nettoyage', 'Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Autre'],
-    zone_de_serveurs: ['Technicien IT', 'Manager', 'Personnel de nettoyage'],
-    zone_de_securite: ['Agent de sécurité', 'Manager', 'Personnel de nettoyage'],
-    zone_de_reception: ['Réceptionniste', 'Manager', 'Personnel de nettoyage'],
-    zone_du_personnel: ['Manager', 'Personnel de nettoyage', 'Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Autre'],
-    zone_d_archives: ['Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Manager', 'Autre']
-};
 
 /**filtrages des employyes par zone **/
 function filterEmployeesParZone(zone) {
@@ -277,33 +268,111 @@ function filterEmployeesParZone(zone) {
     switch (zone) {
 
         case "zone_de_conference":
-            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Réceptionniste' || e.role === 'Technicien IT' || e.role === 'Agent de sécurité' || e.role === 'Autre');
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null || e.role === 'Réceptionniste' && e.zoneActuelle === null || e.role === 'Technicien IT' && e.zoneActuelle === null || e.role === 'Agent de sécurité' && e.zoneActuelle === null || e.role === 'Autre' && e.zoneActuelle === null );
             return employyesApresFiltrage;
             break;
         case "zone_de_serveurs":
-            employeePossibeAssignerAzone_de_serveurs = employeesE.filter(e => e.role === 'Technicien IT' || e.role === 'Manager' || e.role === 'Personnel de nettoyage');
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Technicien IT' && e.zoneActuelle === null || e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null);
             return employyesApresFiltrage;
             break;
         case "zone_de_securite":
-            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Agent de sécurité');
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null || e.role === 'Agent de sécurité' && e.zoneActuelle === null);
             return employyesApresFiltrage;
             break;
         case "zone_de_reception":
-            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Réceptionniste');
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null || e.role === 'Réceptionniste' && e.zoneActuelle === null);
             return employyesApresFiltrage;
             break;
         case "zone_du_personnel":
-            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Réceptionniste' || e.role === 'Technicien IT' || e.role === 'Agent de sécurité' || e.role === 'Autre');
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null || e.role === 'Réceptionniste' && e.zoneActuelle === null || e.role === 'Technicien IT' && e.zoneActuelle === null || e.role === 'Agent de sécurité' && e.zoneActuelle === null || e.role === 'Autre' && e.zoneActuelle === null);
             return employyesApresFiltrage;
             break;
         case "zone_d_archives":
-            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Réceptionniste' || e.role === 'Technicien IT' || e.role === 'Agent de sécurité' || e.role === 'Autre');
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Réceptionniste' && e.zoneActuelle === null || e.role === 'Technicien IT' && e.zoneActuelle === null || e.role === 'Agent de sécurité' && e.zoneActuelle === null || e.role === 'Autre' && e.zoneActuelle === null);
             return employyesApresFiltrage;
             break;
 
     }
 
 }
+
+/**le employees possible dans un zone */
+function ouvrirListeEmployes(zone) {
+    let employeeAafficher = filterEmployeesParZone(zone);
+    console.log('Employés à afficher:', employeeAafficher);
+
+    // Création du le modal
+    const listeEmployeesPossible = document.createElement('div');
+    listeEmployeesPossible.id = 'modalListeEmployees';
+    listeEmployeesPossible.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+
+    // Créer le contenu du modal
+    let contenuModal = `
+        <div class="bg-white rounded-lg w-auto h-auto overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center gap-4 p-4 border-b">
+                <h2 class="text-xl font-bold">Liste des Employés - ${zone}</h2>
+                <button onclick="fermerListeEmployes()" class="text-gray-500 text-2xl font-semi-bold">
+                    X
+                </button>
+            </div>
+            <div class="p-4 overflow-y-auto flex-1">
+    `;
+
+    if (employeeAafficher.length !== 0) {
+        console.log('Employés trouvés:', employeeAafficher);
+
+        employeeAafficher.forEach(em => {
+            contenuModal += `        
+                <div class="flex justify-between items-center gap-4 border p-2 rounded-xl mb-2 hover:bg-gray-50 transition">
+                    <div class="flex items-center gap-3">
+                        <img src="${em.url}"  class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <p class="font-semibold text-gray-800">${em.nom}</p>
+                            <p class="text-sm text-gray-500">${em.email}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">${em.role}</span>
+                        <button onclick="assignerEmploye(${em.id}, '${zone}')" 
+                                class="bg-green-600 hover:bg-green-700 rounded px-2 py-1 text-white font-medium transition">
+                            Assigner
+                        </button>
+                    </div>
+                </div>
+                
+            `;
+        });
+    } else {
+        console.log('Aucun employé disponible');
+        contenuModal += `
+            <div class="flex justify-center items-center bg-red-50 rounded p-6">
+                <p class="text-red-600 font-semibold">Aucun employé disponible pour cette zone</p>
+                <button onclick="fermerListeEmployes()" class="text-white px-2 py-1 rounded bg-red-600 font-semibold">
+                    Annuler
+                </button>
+            </div>
+        `;
+    }
+
+    contenuModal += `
+                    <button onclick="fermerListeEmployes()" class="text-white px-2 py-1 rounded bg-red-600 font-semibold">
+                    Annuler
+                </button>
+            </div>
+        </div>
+    `;
+
+    listeEmployeesPossible.innerHTML = contenuModal;
+    document.body.appendChild(listeEmployeesPossible);
+}
+
+function fermerListeEmployes() {
+    const modal = document.getElementById('modalListeEmployees');
+    modal.remove();
+}
+
+
+
 
 
 
