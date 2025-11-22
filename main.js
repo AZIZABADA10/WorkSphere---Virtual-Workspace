@@ -5,8 +5,6 @@ let inputUrl = document.getElementById('urlEmp');
 let imageProfile = document.getElementById('imageProfile');
 let listeExperiences = document.getElementById('listeExperiences');
 
-
-
 /** Image de profile par défaut */
 inputUrl.addEventListener('input', () => {
     let url = inputUrl.value.trim();
@@ -16,7 +14,6 @@ inputUrl.addEventListener('input', () => {
         imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
     }
 })
-
 
 /**Formaulaire d'ajoute d'un employee **/
 function afficherModal() {
@@ -29,7 +26,6 @@ function fermerModal() {
     listeExperiences.innerHTML = '';
     experiencesTem = []
 }
-
 
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
@@ -133,7 +129,6 @@ function ajouterZoneExperiences() {
     console.log('Élément ajouté avec ID:', experElement.id);
 }
 
-
 function confermerExperElement(idExperElementAConfermier) {
     console.log(idExperElementAConfermier);
     const elementAconfermer = document.getElementById(`exper-${idExperElementAConfermier}`);
@@ -218,7 +213,6 @@ function confermerExperElement(idExperElementAConfermier) {
     
     experiencesTem.push(experience);
 }
-
 
 function supprimerExperElemnt(idElemtExSupprimer) {
     const elementAsupprimer = document.getElementById(`exper-${idElemtExSupprimer}`);
