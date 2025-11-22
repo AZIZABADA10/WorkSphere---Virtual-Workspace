@@ -7,7 +7,6 @@ let listeExperiences = document.getElementById('listeExperiences');
 
 
 
-
 /** Image de profile par défaut */
 inputUrl.addEventListener('input', () => {
     let url = inputUrl.value.trim();
@@ -28,11 +27,14 @@ function fermerModal() {
     formAjoute.reset();
     imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
     listeExperiences.innerHTML = '';
+    experiencesTem = []
 }
 
 
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
+let experiencesTem = []
+/**Formulaire d'ajoute des employees avce validation des inputs */
 
 formAjoute.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -79,7 +81,7 @@ formAjoute.addEventListener('submit', (e) => {
         telephone: teleEmp,
         url: urlEmp,
         zoneActuelle: null,
-        experiences: []
+        experiences: [...experiencesTem]
     }
 
     employees.push(employee);
@@ -87,6 +89,13 @@ formAjoute.addEventListener('submit', (e) => {
     imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
     formAjoute.reset();
     fermerModal();
+    Swal.fire({
+        title: "Succès !",
+        text: `L'employé ${nomEmp} a été ajouté.`,
+        icon: "success",
+        timer: 1000,
+        showConfirmButton: false
+    });
 });
 
 function ajouterZoneExperiences() {
@@ -199,7 +208,15 @@ function confermerExperElement(idExperElementAConfermier) {
     messageValidation.innerHTML = `<span class="text-green-800 font-semibold text-lg">✓ Bien Validé</span>`;
     elementAconfermer.appendChild(messageValidation);
 
-
+    experience = {
+        titre,
+        entreprise,
+        description,
+        dateDebut,
+        dateFin
+    }
+    
+    experiencesTem.push(experience);
 }
 
 
