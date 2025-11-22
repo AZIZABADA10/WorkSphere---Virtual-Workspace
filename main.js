@@ -1,56 +1,54 @@
-const modal = document.getElementById('modalFormAjoute');
-const zoneListeExperiences = document.getElementById('listeExperiences');
-const zoneEmployeListe = document.getElementById('zoneEmployeListe');
-const zoneListeEmployeesNonAssignes = document.getElementById('zoneListeEmployeesNonAssignes');
-const imageProfile = document.getElementById('imageProfile');
-
-
-const Employees = [];
-let id = 1;
-let indexExper = 1;
-
-function fermerModal() {
-    modal.classList.add('hidden');
-}
-
-function afficherModal() {
-    modal.classList.remove('hidden');
-}
-
-
-/**La récuperation des donnée a partire de la formulaire **/
+/** Mnupilation du DOM  */
+const modalFormAjoute = document.getElementById('modalFormAjoute');
 const formAjoute = document.getElementById('formAjoute');
+let inputUrl = document.getElementById('urlEmp');
+let imageProfile = document.getElementById('imageProfile');
+let listeExperiences = document.getElementById('listeExperiences');
+
+
+
+
+/** Image de profile par défaut */
+inputUrl.addEventListener('input', () => {
+    let url = inputUrl.value.trim();
+    if (url) {
+        imageProfile.setAttribute('src', url);
+    } else {
+        imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
+    }
+})
+
+
+/**Formaulaire d'ajoute d'un employee **/
+function afficherModal() {
+    modalFormAjoute.classList.remove('hidden');
+}
+function fermerModal() {
+    modalFormAjoute.classList.add('hidden');
+    formAjoute.reset();
+    imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
+    listeExperiences.innerHTML = '';
+}
+
+
+let employees = JSON.parse(localStorage.getItem('employees')) || [];
+let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
+
 formAjoute.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const Experiences = [];
-
+    /** Récuperation des donnée via dom */
     const nomEmp = document.getElementById('nomEmp').value.trim();
     const roleEmp = document.getElementById('role').value.trim();
     const emailEmp = document.getElementById('email').value.trim();
     const teleEmp = document.getElementById('tele').value.trim();
     const urlEmp = document.getElementById('urlEmp').value.trim();
-    const inputUrl = document.getElementById('urlEmp');
-    
-    inputUrl.addEventListener('input', () => {
-        const url = inputUrl.value.trim();
-
-        if (url) {
-            imageProfile.setAttribute('src', url);
-            //imageProfile.classList.remove('hidden');
-        } else {
-            imageProfile.setAttribute('src', "");
-            //imageProfile.classList.remove('hidden');
-        }
-
-    });
 
 
-    /**La validation des inputs */
 
     const nomRegex = /^[a-zA-Z\s]{2,50}$/;
     const regexNom = document.getElementById('regexNom');
-    regexNom.innerHTML = ''
+    regexNom.innerHTML = '';
     if (!nomRegex.test(nomEmp)) {
         regexNom.innerHTML = `<p class="text-red-600">Le nom doit etre avec les caractaire</p>`;
         return;
@@ -73,293 +71,140 @@ formAjoute.addEventListener('submit', (e) => {
     }
 
 
-    const elementExperience = document.querySelectorAll('.elementExperience');
-    elementExperience.forEach(element => {
-
-        const titreEx = element.querySelector('.titreEx').value.trim();
-        const discriptionEx = element.querySelector('.discriptionEx').value.trim();
-        const dateDebutEx = element.querySelector('.dateDebutEx').value.trim();
-        const dateFinEx = element.querySelector('.dateFinEx').value.trim();
-        const EntrepriseEx = element.querySelector('.EntrepriseEx').value.trim();
-
-
-
-        const experienceElement = {
-            id: indexExper,
-            titreEx: titreEx,
-            discriptionEx: discriptionEx,
-            dateDebutEx: dateDebutEx,
-            dateFinEx: dateFinEx,
-            EntrepriseEx: EntrepriseEx
-        }
-        Experiences.push(experienceElement);
-    });
-
-    const Employe = {
-        idEmployee: id,
+    let employee = {
+        id: ++idEmployye,
         nom: nomEmp,
         role: roleEmp,
         email: emailEmp,
         telephone: teleEmp,
-        localisationActuelle: 'Non assigné',
-        status: false,
         url: urlEmp,
-        Experiences
+        zoneActuelle: null,
+        experiences: []
+    }
 
-    };
-
-    Employees.push(Employe);
-    localStorage.setItem('Employees', JSON.stringify(Employees));
-    id++;
+    employees.push(employee);
+    localStorage.setItem('employees', JSON.stringify(employees));
+    imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
     formAjoute.reset();
-    imageProfile.src = "../assets/iconParDefaut.png";
-    modal.classList.add('hidden');
-    afficherEmployesNonAssignes();
+    fermerModal();
 });
 
-
-/**La form dyniamique  dexperience **/
-zoneListeExperiences.innerHTML = ``;
-function ajouterZoneExper() {
-
-    const experItem = document.createElement('div');
-    experItem.id = `ex${indexExper}`;
-    experItem.classList.add('bg-white', 'bg-opacity-30', 'elementExperience', 'p-2', 'rounded', 'm-2');
-    experItem.innerHTML = `
+function ajouterZoneExperiences() {
+    const experElement = document.createElement('div');
+    experElement.className = 'experience-item border p-2 my-2';
+    experElementId = Date.now();
+    experElement.id = `exper-${experElementId}`;
+    experElement.innerHTML = `
     <h1 class="text-white font-semibold">Experiences </h1>
     <div  class="flex flex-col gap-2 border-1 border-gray-400">
-    <label class="font-bold font-white">Intitulé de poste: </label>
-    <input type="text" class="titreEx rounded"> 
-    <label class="font-bold font-white">Entreprise: </label>
-    <input type="text" class="EntrepriseEx rounded">
-    <label class="font-bold font-white">Description:</label>
-    <textarea name="" class="discriptionEx rounded"></textarea>
-    <label class="font-bold font-white">Date Début:</label>
-    <input type="date" class="dateDebutEx rounded">
-    <label class="font-bold font-white">Date Fin:</label>
-    <input type="date" class="dateFinEx rounded">
-    <div class="flex justify-end mr-1">
-    <button onclick="supprimerExper('ex${indexExper}')"><i class='bx  bx-trash text-red-600'></i> </button>
-    </div>
+        <label class="font-semibold font-white">Intitulé de poste: </label>
+        <input type="text" class="titreEx rounded"> 
+        <div id="regextitre"></div>
+        <label class="font-semibold font-white">Entreprise: </label>
+        <input type="text" class="EntrepriseEx rounded">
+        <div id="regexEntrepriseEx"></div>
+        <label class="font-semibold font-white">Description:</label>
+        <textarea name=""  class="discriptionEx max-h-[200px]  rounded"></textarea>
+        <div id="regexEntrepriseDescription"></div>
+        <label class="font-semibold font-white">Date Début:</label>
+        <input type="date" class="dateDebutEx rounded">
+        <div id="regexDateDebut"></div>
+        <label class="font-semibold font-white">Date Fin:</label>
+        <input type="date" class="dateFinEx rounded">
+        <div id="regexDateFin"></div>
+        <div class="buttons flex justify-end mr-1">
+            <button type="button" onclick="confermerExperElement('${experElementId}')"><i class='bx  bx-check-circle text-xl text-green-900'></i>  </button>
+            <button type="button" onclick="supprimerExperElemnt('${experElementId}')"><i class='bx  bx-trash text-xl text-red-900'></i> </button>
+        </div>
     </div>
     `;
-    zoneListeExperiences.appendChild(experItem);
-    indexExper++;
 
+    listeExperiences.appendChild(experElement);
 
+    console.log('Élément ajouté avec ID:', experElement.id);
 }
 
-function supprimerExper(idExperAsupprimer) {
-    const elementExperience = document.querySelectorAll('.elementExperience');
 
-    elementExperience.forEach(element => {
-        //console.log(element.id);
-        //console.log( idExperAsupprimer);
+function confermerExperElement(idExperElementAConfermier) {
+    console.log(idExperElementAConfermier);
+    const elementAconfermer = document.getElementById(`exper-${idExperElementAConfermier}`);
+    console.log(elementAconfermer);
 
-        if (element.id === idExperAsupprimer) {
-            document.getElementById(idExperAsupprimer).remove();
-            //console.log(element.id === idExperAsupprimer);
-        }
-    });;
-
-    indexExper--;
-
-}
-
-/**
-https://i.pravatar.cc/150?img=1
-https://i.pravatar.cc/150?img=2
-https://i.pravatar.cc/150?img=3
-https://i.pravatar.cc/150?img=4
-https://images.unsplash.com/photo-1502685104226-ee32379fefbe?crop=faces&fit=crop&h=200&w=200
-https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?crop=faces&fit=crop&h=200&w=200
+    const titre = elementAconfermer.querySelector('.titreEx').value.trim();
+    const entreprise = elementAconfermer.querySelector('.EntrepriseEx').value.trim();
+    const description = elementAconfermer.querySelector('.discriptionEx').value.trim();
+    const dateDebut = elementAconfermer.querySelector('.dateDebutEx').value;
+    const dateFin = elementAconfermer.querySelector('.dateFinEx').value;
 
 
- */
-
-function afficherEmployesNonAssignes() {
-    const listEmployeeNonAssignee = JSON.parse(localStorage.getItem('Employees')) || [];
-    const nonAssignes = listEmployeeNonAssignee.filter(e => e.status === false);
-    zoneListeEmployeesNonAssignes.innerHTML = ``;
-
-    if (listEmployeeNonAssignee.length > 0) {
-
-        nonAssignes.forEach(element => {
-
-            const cartEmployye = document.createElement('div');
-            cartEmployye.classList.add('bg-white', 'rounded', 'p-2', 'm-2')
-            cartEmployye.innerHTML = `
-             <div class="flex ">
-                <img src="${element.url ? element.url : "../assets/iconParDefaut.png"}"  class="w-8 h-8 rounded-full">
-                <h4 class="ml-1 font-semibold">${element.nom}</h4>
-            </div>
-            <div class="flex justify-between">
-                <p class="bg-orange-600 rounded mt-1 px-1">${element.role}</p>
-            </div>
-        `;
-            zoneListeEmployeesNonAssignes.appendChild(cartEmployye);
-        });
-    } else {
-
-        const auccuneEmployees = document.createElement('div');
-        auccuneEmployees.innerHTML = `
-        <p class="text-red-700 font-bold p-4 lg:mt-56">Auccun Employees disponible pour le moment</p>
-        `;
-        zoneListeEmployeesNonAssignes.appendChild(auccuneEmployees);
-    }
-    console.log(listEmployeeNonAssignee);
-}
-
-/*
-const role = [
-    'Réceptionniste',
-    'Technicien IT',
-    'Agent de sécurité',
-    'Manager',
-    'Personnel de nettoyage',
-    'Autre'
-];
-*/
-
-const regleDassignment = {
-    zone_de_conference: ['Manager', 'Personnel de nettoyage', 'Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Autre'],
-    zone_de_serveurs: ['Technicien IT', 'Manager', 'Personnel de nettoyage'],
-    zone_de_securite: ['Agent de sécurité', 'Manager', 'Personnel de nettoyage'],
-    zone_de_reception: ['Réceptionniste', 'Manager', 'Personnel de nettoyage'],
-    zone_du_personnel: ['Manager', 'Personnel de nettoyage', 'Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Autre'],
-    zone_d_archives: ['Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Manager', 'Autre']
-};
-
-function ouvrirListeEmployes(zone) {
-    const reglePossibleAcetteZone = regleDassignment[zone];
-
-    const EmployePossible = Employees.filter(e =>
-        reglePossibleAcetteZone.includes(e.role)
-    );
-
-    const listeEmployePossible = document.createElement('div');
-    listeEmployePossible.className = 'listeEmployePossible fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center';
-
-    if (EmployePossible.length !== 0) {
-        const employesList = EmployePossible.map(e => `
-            <div id="em${e.id}" class="flex gap-2  items-center p-2 border-b">
-                <img src="${e.url || '/assets/iconParDefaut.png'}" class="w-8 h-8 rounded-full">
-                <div>${e.nom}</div>
-                <div>${e.role}</div>
-                <button onclick="assignerEmployeeToZone(${e.idEmployee}, '${zone}')" 
-                        class="bg-green-500 text-white px-2 py-1 rounded">
-                    Assigner
-                </button>
-            </div>
-        `).join('');
-
-        listeEmployePossible.innerHTML = `
-            <div class="bg-white p-4 rounded">
-                <h3 class="font-bold">Employéss disponibles</h3>
-                ${employesList}
-                <button id="fermerModale" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-                    Fermer
-                </button>
-            </div>
-        `;
-    } else {
-        listeEmployePossible.innerHTML = `
-            <div class="bg-white p-4  rounded">
-                <p class="text-red-600 font-semibold"> Aucun employé autorisé pour cette zone.</p>
-                <button id="fermerModale" class="mt-4 bg-blue-500 text-white px-1 rounded">
-                    Fermer
-                </button>
-            </div>
-        `;
-    }
-
-    document.body.appendChild(listeEmployePossible);
-
-    document.getElementById('fermerModale').onclick = () => {
-        listeEmployePossible.remove();
+    const titeRegex = /^[a-zA-Z\s]{2,50}$/;
+    const regextitre = document.getElementById('regextitre');
+    regextitre.innerHTML = '';
+    if (!titeRegex.test(titre)) {
+        regextitre.innerHTML = `<p class="text-red-600">Le titre obligé et doit etre avec les caractaire</p>`;
+        return;
     };
-}
 
+    const entrpriseRegex = /^[a-zA-Z\s]{2,50}$/;
+    const regexEntrepriseEx = document.getElementById('regexEntrepriseEx');
+    regexEntrepriseEx.innerHTML = '';
+    if (!entrpriseRegex.test(entreprise)) {
+        regexEntrepriseEx.innerHTML = `<p class="text-red-600">Le nom est obligé et doit etre avec les caractaire</p>`;
+        return;
+    };
 
-function assignerEmployeeToZone(idEmp, zone) {
-    const employees = JSON.parse(localStorage.getItem('Employees')) || [];
-    const employe = employees.find(e => e.idEmployee === idEmp);
-    employe.localisationActuelle = zone;
-    employe.status = true; 
-    localStorage.setItem('Employees', JSON.stringify(employees));
-    console.log(`Employé ${employe.nom} assigné à la ${zone}`);
-    afficherEmployeeSurZones();
-    afficherEmployesNonAssignes();
+    const descriptionRegex = /^[a-zA-Z0-9\s]{2,250}$/;
+    const regexEntrepriseDescription = document.getElementById('regexEntrepriseDescription');
+    regexEntrepriseDescription.innerHTML = '';
+    if (!descriptionRegex.test(description)) {
+        regexEntrepriseDescription.innerHTML = `<p class="text-red-600">La description et obligé et doit etre sauf avec les caractaire et les nombres </p>`;
+        return;
+    };
 
-};
+    const regexDateDebut = document.getElementById('regexDateDebut');
+    regexDateDebut.innerHTML = '';
+    if (!dateDebut) {
+        regexDateDebut.innerHTML = `<p class="text-red-600">La date debut es obligé`;
+        return;
+    };
 
+    const regexDateFin = document.getElementById('regexDateFin');
+    regexDateFin.innerHTML = '';
+    if (!dateFin) {
+        regexDateFin.innerHTML = `<p class="text-red-600">La date debut es obligé`;
+        return;
+    };
 
-function afficherEmployeeSurZones() {
-    const employees = JSON.parse(localStorage.getItem('Employees')) || [];
+    if (dateFin <= dateDebut) {
+        Swal.fire({
+            title: "Erreur",
+            text: "La date de fin doit être après la date de début !",
+            icon: "error"
+        });
+        return;
+    };
 
-    const zones = [
-        "zone_de_conference",
-        "zone_de_serveurs",
-        "zone_de_securite",
-        "zone_de_reception",
-        "zone_du_personnel",
-        "zone_d_archives"
-    ];
-
-    zones.forEach(zone => {
-        const zoneDiv = document.getElementById(zone);
-        if (zoneDiv) zoneDiv.innerHTML = "";
+    elementAconfermer.querySelectorAll('input, textarea').forEach(input => {
+        input.disabled = true;
+        input.classList.add('bg-gray-200', 'cursor-not-allowed');
     });
 
-    employees.forEach(emp => {
-        if (emp.status === true && emp.localisationActuelle) {
+    const buttonsDiv = elementAconfermer.querySelector('.buttons');
+    if (buttonsDiv) {
+        buttonsDiv.classList.add('hidden');
+    };
 
-            const zoneDiv = document.getElementById(emp.localisationActuelle);
+    const messageValidation = document.createElement('div');
+    messageValidation.className = 'flex justify-end mr-1 mt-2';
+    messageValidation.innerHTML = `<span class="text-green-800 font-semibold text-lg">✓ Bien Validé</span>`;
+    elementAconfermer.appendChild(messageValidation);
 
-            if (zoneDiv) {
-                const card = document.createElement('div');
-                card.classList.add('flex','p-1','mr-2' ,'lg:mr-0', 'bg-white', 'rounded-xl' , 'mb-2');
 
-                card.innerHTML = `
-                    <p class="mr-2">${emp.nom}</p>
-                    <button onclick="retirerEmploye(${emp.idEmployee})" class="text-red-500">
-                        x
-                    </button>
-                `;
-
-                zoneDiv.appendChild(card);
-            }
-        }
-    });
-}
-
-function retirerEmploye(idEmp) {
-    const employees = JSON.parse(localStorage.getItem('Employees')) || [];
-    const employe = employees.find(e => e.idEmployee === idEmp);
-
-    employe.status = false;
-    employe.localisationActuelle = "Non assigné";
-
-    localStorage.setItem('Employees', JSON.stringify(employees));
-
-    afficherEmployesNonAssignes();
-    afficherEmployeeSurZones();
 }
 
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const employeesData = localStorage.getItem('Employees');
-    console.log(employeesData);
-
-    if (employeesData) {
-        const savedEmployees = JSON.parse(employeesData);
-        Employees.push(...savedEmployees);
-        if (Employees.length > 0) {
-            id = Math.max(...Employees.map(e => e.idEmployee)) + 1;
-        }
-    }
-    afficherEmployesNonAssignes();
-    afficherEmployeeSurZones();
-    
-});
+function supprimerExperElemnt(idElemtExSupprimer) {
+    const elementAsupprimer = document.getElementById(`exper-${idElemtExSupprimer}`);
+    //console.log(elementAsupprimer);
+    elementAsupprimer.remove();
+}
