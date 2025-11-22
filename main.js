@@ -4,6 +4,7 @@ const formAjoute = document.getElementById('formAjoute');
 let inputUrl = document.getElementById('urlEmp');
 let imageProfile = document.getElementById('imageProfile');
 let listeExperiences = document.getElementById('listeExperiences');
+let zoneListeEmployeesNonAssignes = document.getElementById('zoneListeEmployeesNonAssignes');
 
 /** Image de profile par défaut */
 inputUrl.addEventListener('input', () => {
@@ -27,8 +28,11 @@ function fermerModal() {
     experiencesTem = []
 }
 
+/** recuperation des donnee a partir de localStorage */
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
+
+
 let experiencesTem = []
 /**Formulaire d'ajoute des employees avce validation des inputs */
 
@@ -92,8 +96,10 @@ formAjoute.addEventListener('submit', (e) => {
         timer: 1000,
         showConfirmButton: false
     });
+    affichierEmployeesSurNonAssigne();
 });
 
+/** form dynamique pour ajouter une zone d'experience */
 function ajouterZoneExperiences() {
     const experElement = document.createElement('div');
     experElement.className = 'experience-item border p-2 my-2';
@@ -128,7 +134,7 @@ function ajouterZoneExperiences() {
 
     console.log('Élément ajouté avec ID:', experElement.id);
 }
-
+/**confirmation et validation de experience */
 function confermerExperElement(idExperElementAConfermier) {
     console.log(idExperElementAConfermier);
     const elementAconfermer = document.getElementById(`exper-${idExperElementAConfermier}`);
@@ -142,7 +148,7 @@ function confermerExperElement(idExperElementAConfermier) {
 
 
     const titeRegex = /^[a-zA-Z\s]{2,50}$/;
-    const regextitre =elementAconfermer.querySelector('.regextitre');
+    const regextitre = elementAconfermer.querySelector('.regextitre');
     regextitre.innerHTML = '';
     if (!titeRegex.test(titre)) {
         regextitre.innerHTML = `<p class="text-red-600">Le titre obligé et doit etre avec les caractaire</p>`;
@@ -150,7 +156,7 @@ function confermerExperElement(idExperElementAConfermier) {
     };
 
     const entrpriseRegex = /^[a-zA-Z\s]{2,50}$/;
-    const regexEntrepriseEx =elementAconfermer.querySelector('.regexEntrepriseEx');
+    const regexEntrepriseEx = elementAconfermer.querySelector('.regexEntrepriseEx');
     regexEntrepriseEx.innerHTML = '';
     if (!entrpriseRegex.test(entreprise)) {
         regexEntrepriseEx.innerHTML = `<p class="text-red-600">Le nom est obligé et doit etre avec les caractaire</p>`;
@@ -210,12 +216,47 @@ function confermerExperElement(idExperElementAConfermier) {
         dateDebut,
         dateFin
     }
-    
+
     experiencesTem.push(experience);
 }
 
+/**supprimer elementexper a partir de zone experience */
 function supprimerExperElemnt(idElemtExSupprimer) {
     const elementAsupprimer = document.getElementById(`exper-${idElemtExSupprimer}`);
     //console.log(elementAsupprimer);
     elementAsupprimer.remove();
 }
+
+/*affichier les employee non assigee */
+function affichierEmployeesSurNonAssigne() {
+    const employeesE = JSON.parse(localStorage.getItem('employees')) || [];
+    zoneListeEmployeesNonAssignes.innerHTML = '';
+
+    if (employeesE.length === 0) {
+
+        const carteEmplo = document.createElement('div');
+        carteEmplo.innerHTML = `
+            <div class="flex justify-center text-red-700 mt-56 ml-2 rounded">
+                <p class="font-semibold">Accune employees disponible pour le moment</p>
+            </div>
+        `;
+        zoneListeEmployeesNonAssignes.appendChild(carteEmplo);
+    } else {
+
+        employeesE.forEach(e => {
+            const carteEmplo = document.createElement('div');
+            carteEmplo.classList.add('bg-white', 'rounded', 'p-1', 'm-2')
+            carteEmplo.innerHTML = `
+                <div class="flex bg-white ">
+                <img src="${e.url}" class="w-8 h-8 rounded-full">
+                <h4 class="ml-1 font-semibold">${e.nom}</h4>
+                </div>
+                <div class="flex justify-between">
+                    <p class="bg-orange-600 rounded mt-1 px-1">${e.role}</p>
+                </div>
+            `;
+            zoneListeEmployeesNonAssignes.appendChild(carteEmplo);
+        });
+    }
+}
+affichierEmployeesSurNonAssigne();
