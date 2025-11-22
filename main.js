@@ -92,28 +92,28 @@ formAjoute.addEventListener('submit', (e) => {
 function ajouterZoneExperiences() {
     const experElement = document.createElement('div');
     experElement.className = 'experience-item border p-2 my-2';
-    experElementId = Date.now();
+    let experElementId = Date.now();
     experElement.id = `exper-${experElementId}`;
     experElement.innerHTML = `
     <h1 class="text-white font-semibold">Experiences </h1>
     <div  class="flex flex-col gap-2 border-1 border-gray-400">
         <label class="font-semibold font-white">Intitulé de poste: </label>
         <input type="text" class="titreEx rounded"> 
-        <div id="regextitre"></div>
+        <div class="regextitre"></div>
         <label class="font-semibold font-white">Entreprise: </label>
         <input type="text" class="EntrepriseEx rounded">
-        <div id="regexEntrepriseEx"></div>
+        <div class="regexEntrepriseEx"></div>
         <label class="font-semibold font-white">Description:</label>
         <textarea name=""  class="discriptionEx max-h-[200px]  rounded"></textarea>
-        <div id="regexEntrepriseDescription"></div>
+        <div class="regexEntrepriseDescription"></div>
         <label class="font-semibold font-white">Date Début:</label>
         <input type="date" class="dateDebutEx rounded">
-        <div id="regexDateDebut"></div>
+        <div class="regexDateDebut"></div>
         <label class="font-semibold font-white">Date Fin:</label>
         <input type="date" class="dateFinEx rounded">
-        <div id="regexDateFin"></div>
+        <div class="regexDateFin"></div>
         <div class="buttons flex justify-end mr-1">
-            <button type="button" onclick="confermerExperElement('${experElementId}')"><i class='bx  bx-check-circle text-xl text-green-900'></i>  </button>
+            <button type="button" onclick="confermerExperElement(${experElementId})"><i class='bx  bx-check-circle text-xl text-green-900'></i>  </button>
             <button type="button" onclick="supprimerExperElemnt('${experElementId}')"><i class='bx  bx-trash text-xl text-red-900'></i> </button>
         </div>
     </div>
@@ -138,7 +138,7 @@ function confermerExperElement(idExperElementAConfermier) {
 
 
     const titeRegex = /^[a-zA-Z\s]{2,50}$/;
-    const regextitre = document.getElementById('regextitre');
+    const regextitre =elementAconfermer.querySelector('.regextitre');
     regextitre.innerHTML = '';
     if (!titeRegex.test(titre)) {
         regextitre.innerHTML = `<p class="text-red-600">Le titre obligé et doit etre avec les caractaire</p>`;
@@ -146,7 +146,7 @@ function confermerExperElement(idExperElementAConfermier) {
     };
 
     const entrpriseRegex = /^[a-zA-Z\s]{2,50}$/;
-    const regexEntrepriseEx = document.getElementById('regexEntrepriseEx');
+    const regexEntrepriseEx =elementAconfermer.querySelector('.regexEntrepriseEx');
     regexEntrepriseEx.innerHTML = '';
     if (!entrpriseRegex.test(entreprise)) {
         regexEntrepriseEx.innerHTML = `<p class="text-red-600">Le nom est obligé et doit etre avec les caractaire</p>`;
@@ -154,21 +154,21 @@ function confermerExperElement(idExperElementAConfermier) {
     };
 
     const descriptionRegex = /^[a-zA-Z0-9\s]{2,250}$/;
-    const regexEntrepriseDescription = document.getElementById('regexEntrepriseDescription');
+    const regexEntrepriseDescription = elementAconfermer.querySelector('.regexEntrepriseDescription');
     regexEntrepriseDescription.innerHTML = '';
     if (!descriptionRegex.test(description)) {
         regexEntrepriseDescription.innerHTML = `<p class="text-red-600">La description et obligé et doit etre sauf avec les caractaire et les nombres </p>`;
         return;
     };
 
-    const regexDateDebut = document.getElementById('regexDateDebut');
+    const regexDateDebut = elementAconfermer.querySelector('.regexDateDebut');
     regexDateDebut.innerHTML = '';
     if (!dateDebut) {
         regexDateDebut.innerHTML = `<p class="text-red-600">La date debut es obligé`;
         return;
     };
 
-    const regexDateFin = document.getElementById('regexDateFin');
+    const regexDateFin = elementAconfermer.querySelector('.regexDateFin');
     regexDateFin.innerHTML = '';
     if (!dateFin) {
         regexDateFin.innerHTML = `<p class="text-red-600">La date debut es obligé`;
