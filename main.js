@@ -34,8 +34,8 @@ let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 
 
 
 let experiencesTem = []
-/**Formulaire d'ajoute des employees avce validation des inputs */
 
+/**Formulaire d'ajoute des employees avce validation des inputs */
 formAjoute.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -132,13 +132,13 @@ function ajouterZoneExperiences() {
 
     listeExperiences.appendChild(experElement);
 
-    console.log('Élément ajouté avec ID:', experElement.id);
+d);
 }
 /**confirmation et validation de experience */
 function confermerExperElement(idExperElementAConfermier) {
-    console.log(idExperElementAConfermier);
+    //console.log(idExperElementAConfermier);
     const elementAconfermer = document.getElementById(`exper-${idExperElementAConfermier}`);
-    console.log(elementAconfermer);
+    //console.log(elementAconfermer);
 
     const titre = elementAconfermer.querySelector('.titreEx').value.trim();
     const entreprise = elementAconfermer.querySelector('.EntrepriseEx').value.trim();
@@ -259,4 +259,53 @@ function affichierEmployeesSurNonAssigne() {
         });
     }
 }
+
+/** les role possible achaque zone */
+const regleDassignment = {
+    zone_de_conference: ['Manager', 'Personnel de nettoyage', 'Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Autre'],
+    zone_de_serveurs: ['Technicien IT', 'Manager', 'Personnel de nettoyage'],
+    zone_de_securite: ['Agent de sécurité', 'Manager', 'Personnel de nettoyage'],
+    zone_de_reception: ['Réceptionniste', 'Manager', 'Personnel de nettoyage'],
+    zone_du_personnel: ['Manager', 'Personnel de nettoyage', 'Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Autre'],
+    zone_d_archives: ['Réceptionniste', 'Technicien IT', 'Agent de sécurité', 'Manager', 'Autre']
+};
+
+/**filtrages des employyes par zone **/
+function filterEmployeesParZone(zone) {
+    let employeesE = JSON.parse(localStorage.getItem('employees')) || [];
+    let employyesApresFiltrage = [];
+    switch (zone) {
+
+        case "zone_de_conference":
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Réceptionniste' || e.role === 'Technicien IT' || e.role === 'Agent de sécurité' || e.role === 'Autre');
+            return employyesApresFiltrage;
+            break;
+        case "zone_de_serveurs":
+            employeePossibeAssignerAzone_de_serveurs = employeesE.filter(e => e.role === 'Technicien IT' || e.role === 'Manager' || e.role === 'Personnel de nettoyage');
+            return employyesApresFiltrage;
+            break;
+        case "zone_de_securite":
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Agent de sécurité');
+            return employyesApresFiltrage;
+            break;
+        case "zone_de_reception":
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Réceptionniste');
+            return employyesApresFiltrage;
+            break;
+        case "zone_du_personnel":
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Personnel de nettoyage' || e.role === 'Réceptionniste' || e.role === 'Technicien IT' || e.role === 'Agent de sécurité' || e.role === 'Autre');
+            return employyesApresFiltrage;
+            break;
+        case "zone_d_archives":
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' || e.role === 'Réceptionniste' || e.role === 'Technicien IT' || e.role === 'Agent de sécurité' || e.role === 'Autre');
+            return employyesApresFiltrage;
+            break;
+
+    }
+
+}
+
+
+
+
 affichierEmployeesSurNonAssigne();
