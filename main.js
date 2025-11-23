@@ -95,7 +95,7 @@ formAjoute.addEventListener('submit', (e) => {
         email: emailEmp,
         telephone: teleEmp,
         url: urlEmp,
-        tailleZoneActuelle: null,
+        zoneActuelle: null,
         experiences: [...experiencesTem]
     }
 
@@ -398,30 +398,30 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
         zone_d_archives: 2
     };
 
-
-    let tailleZoneActuelle;
+    // Vérifier si la zone est pleine
+    let zoneActuelle;
     switch (zoneAassiger) {
         case "zone_de_conference":
-            tailleZoneActuelle = zoneDeConference;
+            zoneActuelle = zoneDeConference;
             break;
         case "zone_de_serveurs":
-            tailleZoneActuelle = zoneDeServeurs;
+            zoneActuelle = zoneDeServeurs;
             break;
         case "zone_de_securite":
-            tailleZoneActuelle = zoneDeSecurite;
+            zoneActuelle = zoneDeSecurite;
             break;
         case "zone_de_reception":
-            tailleZoneActuelle = zoneDeReception;
+            zoneActuelle = zoneDeReception;
             break;
         case "zone_du_personnel":
-            tailleZoneActuelle = zoneDePersonnel;
+            zoneActuelle = zoneDePersonnel;
             break;
         case "zone_d_archives":
-            tailleZoneActuelle = zoneDArchives;
+            zoneActuelle = zoneDArchives;
             break;
     }
 
-    if (tailleZoneActuelle.length >= maxParZone[zoneAassiger]) {
+    if (zoneActuelle.length >= maxParZone[zoneAassiger]) {
         Swal.fire({
             title: "Impossible d’assigner",
             text: "Cette zone est pleine ! (max 2 employés)",
@@ -435,7 +435,7 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
         return;
     }
 
-    employees[indexEmployeeAAssigner].tailleZoneActuelle = zoneAassiger;
+    employees[indexEmployeeAAssigner].zoneActuelle = zoneAassiger;
     localStorage.setItem('employees', JSON.stringify(employees));
 
     switch (zoneAassiger) {
@@ -505,7 +505,7 @@ function retirerEmploye(idARetirer, zoneHtml) {
     let employees = JSON.parse(localStorage.getItem('employees')) || [];
     let empIndex = employees.findIndex(e => e.id === idARetirer);
 
-    employees[empIndex].tailleZoneActuelle = null;
+    employees[empIndex].zoneActuelle = null;
     localStorage.setItem('employees', JSON.stringify(employees));
 
     switch (zoneHtml) {
