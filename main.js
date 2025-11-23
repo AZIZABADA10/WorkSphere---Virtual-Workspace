@@ -228,10 +228,11 @@ function supprimerExperElemnt(idElemtExSupprimer) {
 
 /*affichier les employee non assigee */
 function affichierEmployeesSurNonAssigne() {
-    const employeesE = JSON.parse(localStorage.getItem('employees')) || [];
+    let employeesE = JSON.parse(localStorage.getItem('employees')) || [];
+    let employeeNonAssigner = employeesE.filter(e => e.zoneActuelle === null)
     zoneListeEmployeesNonAssignes.innerHTML = '';
 
-    if (employeesE.length === 0) {
+    if (employeeNonAssigner.length === 0) {
 
         const carteEmplo = document.createElement('div');
         carteEmplo.innerHTML = `
@@ -242,7 +243,7 @@ function affichierEmployeesSurNonAssigne() {
         zoneListeEmployeesNonAssignes.appendChild(carteEmplo);
     } else {
 
-        employeesE.forEach(e => {
+        employeeNonAssigner.forEach(e => {
             const carteEmplo = document.createElement('div');
             carteEmplo.classList.add('bg-white', 'rounded', 'p-1', 'm-1')
             carteEmplo.innerHTML = `
@@ -260,7 +261,6 @@ function affichierEmployeesSurNonAssigne() {
     }
 }
 
-
 /**filtrages des employyes par zone **/
 function filterEmployeesParZone(zone) {
     let employeesE = JSON.parse(localStorage.getItem('employees')) || [];
@@ -268,7 +268,7 @@ function filterEmployeesParZone(zone) {
     switch (zone) {
 
         case "zone_de_conference":
-            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null || e.role === 'Réceptionniste' && e.zoneActuelle === null || e.role === 'Technicien IT' && e.zoneActuelle === null || e.role === 'Agent de sécurité' && e.zoneActuelle === null || e.role === 'Autre' && e.zoneActuelle === null );
+            employyesApresFiltrage = employeesE.filter(e => e.role === 'Manager' && e.zoneActuelle === null || e.role === 'Personnel de nettoyage' && e.zoneActuelle === null || e.role === 'Réceptionniste' && e.zoneActuelle === null || e.role === 'Technicien IT' && e.zoneActuelle === null || e.role === 'Agent de sécurité' && e.zoneActuelle === null || e.role === 'Autre' && e.zoneActuelle === null);
             return employyesApresFiltrage;
             break;
         case "zone_de_serveurs":
@@ -299,7 +299,7 @@ function filterEmployeesParZone(zone) {
 /**le employees possible dans un zone */
 function ouvrirListeEmployes(zone) {
     let employeeAafficher = filterEmployeesParZone(zone);
-    console.log('Employés à afficher:', employeeAafficher);
+    //console.log('Employés à afficher:', employeeAafficher);
 
     // Création du le modal
     const listeEmployeesPossible = document.createElement('div');
@@ -319,7 +319,7 @@ function ouvrirListeEmployes(zone) {
     `;
 
     if (employeeAafficher.length !== 0) {
-        console.log('Employés trouvés:', employeeAafficher);
+        //console.log('Employés trouvés:', employeeAafficher);
 
         employeeAafficher.forEach(em => {
             contenuModal += `        
@@ -343,13 +343,10 @@ function ouvrirListeEmployes(zone) {
             `;
         });
     } else {
-        console.log('Aucun employé disponible');
+        //console.log('Aucun employé disponible');
         contenuModal += `
             <div class="flex justify-center items-center bg-red-50 rounded p-6">
                 <p class="text-red-600 font-semibold">Aucun employé disponible pour cette zone</p>
-                <button onclick="fermerListeEmployes()" class="text-white px-2 py-1 rounded bg-red-600 font-semibold">
-                    Annuler
-                </button>
             </div>
         `;
     }
@@ -366,15 +363,94 @@ function ouvrirListeEmployes(zone) {
     document.body.appendChild(listeEmployeesPossible);
 }
 
+/**Fermer modal de liste employees par chaque zone */
 function fermerListeEmployes() {
     const modal = document.getElementById('modalListeEmployees');
     modal.remove();
 }
 
 
+let zoneDeConference = [];
+let zoneDeServeurs = [];
+let zoneDeSecurite = [];
+let zoneDeReception = [];
+let zoneDePersonnel = [];
+let zoneDArchives = [];
+
+function assignerEmploye(idEmplAassigner, zoneAassiger) {
+
+    let employees = JSON.parse(localStorage.getItem('employees')) || [];
+    let indexEmployeeAAssigner = employees.findIndex(e => e.id === idEmplAassigner);
+    employees[indexEmployeeAAssigner].zoneActuelle = zoneAassiger;
+    localStorage.setItem('employees', JSON.stringify(employees));
+
+    switch (zoneAassiger) {
+        case "zone_de_conference":
+            zoneDeConference.push(EmployeeAAssigner);
+            console.log(zoneDeConference);
+            break;
+        case "zone_de_serveurs":
+            zoneDeServeurs.push(EmployeeAAssigner);
+            break;
+        case "zone_de_securite":
+            zoneDeSecurite.push(EmployeeAAssigner);
+            break;
+        case "zone_de_reception":
+            zoneDeReception.push(EmployeeAAssigner);
+            break;
+        case "zone_du_personnel":
+            zoneDePersonnel.push(EmployeeAAssigner);
+            break;
+        case "zone_d_archives":
+            zoneDArchives.push(EmployeeAAssigner);
+            break;
+
+    }
+    fermerListeEmployes();
+    affichierEmployeesSurNonAssigne();
+}
+
+// function assignerEmploye(idEmplAassigner, zoneAassiger) {
+//     let employees = JSON.parse(localStorage.getItem('employees')) || [];
+//     const employeeIndex = employees.findIndex(e => e.id === idEmplAassigner);
 
 
+//     const employee = employees[employeeIndex];
 
+//     employees[employeeIndex].zoneActuelle = zoneAassiger;
+//     localStorage.setItem('employees', JSON.stringify(employees));
 
+//     switch (zoneAassiger) {
+//         case "zone_de_conference":
+//             zoneDeConference.push(employee);
+//             console.log('Zone de conférence:', zoneDeConference);
+//             break;
+//         case "zone_de_serveurs":
+//             zoneDeServeurs.push(employee);
+//             console.log('Zone de serveurs:', zoneDeServeurs);
+//             break;
+//         case "zone_de_securite":
+//             zoneDeSecurite.push(employee);
+//             console.log('Zone de sécurité:', zoneDeSecurite);
+//             break;
+//         case "zone_de_reception":
+//             zoneDeReception.push(employee);
+//             console.log('Zone de réception:', zoneDeReception);
+//             break;
+//         case "zone_du_personnel":
+//             zoneDePersonnel.push(employee);
+//             console.log('Zone du personnel:', zoneDePersonnel);
+//             break;
+//         case "zone_d_archives":
+//             zoneDArchives.push(employee);
+//             console.log('Zone d\'archives:', zoneDArchives);
+//             break;
+//     }
+
+//     // Fermer le modal
+//     fermerListeEmployes();
+//     affichierEmployeesSurNonAssigne();
+
+// }
 
 affichierEmployeesSurNonAssigne();
