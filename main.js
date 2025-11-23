@@ -321,7 +321,6 @@ function ouvrirListeEmployes(zone) {
     listeEmployeesPossible.id = 'modalListeEmployees';
     listeEmployeesPossible.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
 
-    // Créer le contenu du modal
     let contenuModal = `
         <div class="bg-white rounded-lg w-auto h-auto overflow-hidden flex flex-col">
             <div class="flex justify-between items-center gap-4 p-4 border-b">
@@ -384,6 +383,7 @@ function fermerListeEmployes() {
     modal.remove();
 }
 
+
 function assignerEmploye(idEmplAassigner, zoneAassiger) {
     let employees = JSON.parse(localStorage.getItem('employees')) || [];
     let indexEmployeeAAssigner = employees.findIndex(e => e.id === idEmplAassigner);
@@ -424,10 +424,14 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
 }
 
 
-function affichierEmployeesDansSonZone(listeDeZone,IdZoneSurHtml){
+function affichierEmployeesDansSonZone(listeDeZone, IdZoneSurHtml) {
     const zoneEmp = document.getElementById(IdZoneSurHtml);
-    zoneEmp.classList="flex flex-row lg:flex-col min-h-[40px] lg:min-h-[340px] overflow-x-auto lg:overflow-y-auto p-1 m-1 mb-2 rounded-xl";
-
+    zoneEmp.classList.add(
+        "flex", "flex-row", "lg:flex-col",
+        "min-h-[40px]", "lg:min-h-[340px]",
+        "overflow-x-auto", "lg:overflow-y-auto",
+        "p-1", "m-1", "mb-2", "rounded-xl"
+    );
     zoneEmp.innerHTML = "";
     listeDeZone.forEach(e => {
         const cartEmp = document.createElement('div');
@@ -444,7 +448,7 @@ function affichierEmployeesDansSonZone(listeDeZone,IdZoneSurHtml){
 
         zoneEmp.appendChild(cartEmp);
     })
-    
+
 }
 
 
@@ -494,7 +498,7 @@ function retirerEmploye(idARetirer, zoneHtml) {
     affichierEmployeesSurNonAssigne();
     afficherToutesLesZones();
 
-   
+
 }
 
 function afficherToutesLesZones() {
@@ -504,7 +508,39 @@ function afficherToutesLesZones() {
     affichierEmployeesDansSonZone(zoneDeReception, "listeEmployeesZoneReception");
     affichierEmployeesDansSonZone(zoneDePersonnel, "listeEmployeesZonePersonnel");
     affichierEmployeesDansSonZone(zoneDArchives, "listeEmployeesZoneArchives");
+    validationColorDuZone();
 }
 
+// let employees = JSON.parse(localStorage.getItem('employees')) || [];
+// let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
+// let zoneDeConference = JSON.parse(localStorage.getItem('zoneDeConference')) || [];
+// let zoneDeServeurs = JSON.parse(localStorage.getItem('zoneDeServeurs')) || [];
+// let zoneDeSecurite = JSON.parse(localStorage.getItem('zoneDeSecurite')) || [];
+// let zoneDeReception = JSON.parse(localStorage.getItem('zoneDeReception')) || [];
+// let zoneDePersonnel = JSON.parse(localStorage.getItem('zoneDePersonnel')) || [];
+// let zoneDArchives = JSON.parse(localStorage.getItem('zoneDArchives')) || [];
+
+
+function validationColorDuZone() {
+    const zones = [
+        { liste: zoneDeServeurs, idHtml: 'salleServeur' },
+        { liste: zoneDeSecurite, idHtml: 'salleSecurité' },
+        { liste: zoneDeReception, idHtml: 'salleRéception' },
+        { liste: zoneDArchives, idHtml: 'salleDarchives' }
+    ];
+
+    zones.forEach(zone => {
+        const divZone = document.getElementById(zone.idHtml);
+        if (zone.liste.length === 0) {
+            divZone.classList.add('bg-red-300'); 
+        } else {
+            divZone.classList.remove('bg-red-300');  
+        }
+    });
+}
+
+
+
+
 affichierEmployeesSurNonAssigne();
- afficherToutesLesZones()
+afficherToutesLesZones();
