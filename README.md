@@ -83,7 +83,7 @@ Avec Flexbox, Grid, Tailwind CSS.
 
 ------------------------------------------------------------------------
 
-## 🗂 Organisation & Méthodologie
+##  Organisation & Méthodologie
 
 -   Méthodologie Agile / Scrum\
 -   Outils : Jira \

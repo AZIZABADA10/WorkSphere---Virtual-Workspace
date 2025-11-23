@@ -16,6 +16,9 @@ inputUrl.addEventListener('input', () => {
     }
 })
 
+
+
+
 /**Formaulaire d'ajoute d'un employee **/
 function afficherModal() {
     modalFormAjoute.classList.remove('hidden');
@@ -28,7 +31,7 @@ function fermerModal() {
     experiencesTem = []
 }
 
-/** recuperation des donnee a partir de localStorage */
+/** initialisation et récuperation des donnée a partir de localStorage */
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
 let zoneDeConference = JSON.parse(localStorage.getItem('zoneDeConference')) || [];
@@ -75,6 +78,12 @@ formAjoute.addEventListener('submit', (e) => {
     regexTele.innerHTML = '';
     if (!teleRegex.test(teleEmp)) {
         regexTele.innerHTML = `<p class="text-red-600">Le numéro doit contenir 10 chiffres et commencer par 06 ou 05 ou 07 !</p>`;
+        return;
+    }
+    const regexRole = document.getElementById('regexRole');
+    regexRole.innerHTML = '';
+    if (!roleEmp) {
+        regexRole.innerHTML = `<p class="text-red-600">Le role et obligatoire !</p>`;
         return;
     }
 
@@ -358,7 +367,7 @@ function ouvrirListeEmployes(zone) {
     }
 
     contenuModal += `
-                    <button onclick="fermerListeEmployes()" class="text-white px-2 py-1 rounded bg-red-600 font-semibold">
+                    <button onclick="fermerListeEmployes()" class="text-white px-2 py-1 rounded bg-red-600 mt-2 font-semibold">
                     Annuler
                 </button>
             </div>
@@ -410,7 +419,92 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
     }
     fermerListeEmployes();
     affichierEmployeesSurNonAssigne();
+    afficherToutesLesZones();
+
 }
 
 
+function affichierEmployeesDansSonZone(listeDeZone,IdZoneSurHtml){
+    const zoneEmp = document.getElementById(IdZoneSurHtml);
+    zoneEmp.classList="flex flex-row lg:flex-col min-h-[40px] lg:min-h-[340px] overflow-x-auto lg:overflow-y-auto p-1 m-1 mb-2 rounded-xl";
+
+    zoneEmp.innerHTML = "";
+    listeDeZone.forEach(e => {
+        const cartEmp = document.createElement('div');
+        cartEmp.classList = "";
+        cartEmp.innerHTML = `
+            <div class="bg-white grow rounded-full flex justify-between w-36 items-center mb-2 p-1">
+                    <div class="flex gap-2">
+                        <img src="${e.url}" class="w-8 h-8 rounded-full">
+                        <p class="font-semibold">${e.nom}</p>
+                    </div>
+                    <button class="text-red-600" onclick="retirerEmploye(${e.id}, '${IdZoneSurHtml}')">X</button>
+            </div>
+        `;
+
+        zoneEmp.appendChild(cartEmp);
+    })
+    
+}
+
+
+
+
+function retirerEmploye(idARetirer, zoneHtml) {
+
+    let employees = JSON.parse(localStorage.getItem('employees')) || [];
+    let empIndex = employees.findIndex(e => e.id === idARetirer);
+
+    employees[empIndex].zoneActuelle = null;
+    localStorage.setItem('employees', JSON.stringify(employees));
+
+    switch (zoneHtml) {
+
+        case "listeEmployeesZoneConference":
+            zoneDeConference = zoneDeConference.filter(e => e.id !== idARetirer);
+            localStorage.setItem('zoneDeConference', JSON.stringify(zoneDeConference));
+            break;
+
+        case "listeEmployeesZoneServeurs":
+            zoneDeServeurs = zoneDeServeurs.filter(e => e.id !== idARetirer);
+            localStorage.setItem('zoneDeServeurs', JSON.stringify(zoneDeServeurs));
+            break;
+
+        case "listeEmployeesZoneSecurite":
+            zoneDeSecurite = zoneDeSecurite.filter(e => e.id !== idARetirer);
+            localStorage.setItem('zoneDeSecurite', JSON.stringify(zoneDeSecurite));
+            break;
+
+        case "listeEmployeesZoneReception":
+            zoneDeReception = zoneDeReception.filter(e => e.id !== idARetirer);
+            localStorage.setItem('zoneDeReception', JSON.stringify(zoneDeReception));
+            break;
+
+        case "listeEmployeesZonePersonnel":
+            zoneDePersonnel = zoneDePersonnel.filter(e => e.id !== idARetirer);
+            localStorage.setItem('zoneDePersonnel', JSON.stringify(zoneDePersonnel));
+            break;
+
+        case "listeEmployeesZoneArchives":
+            zoneDArchives = zoneDArchives.filter(e => e.id !== idARetirer);
+            localStorage.setItem('zoneDArchives', JSON.stringify(zoneDArchives));
+            break;
+    }
+
+    affichierEmployeesSurNonAssigne();
+    afficherToutesLesZones();
+
+   
+}
+
+function afficherToutesLesZones() {
+    affichierEmployeesDansSonZone(zoneDeConference, "listeEmployeesZoneConference");
+    affichierEmployeesDansSonZone(zoneDeServeurs, "listeEmployeesZoneServeurs");
+    affichierEmployeesDansSonZone(zoneDeSecurite, "listeEmployeesZoneSecurite");
+    affichierEmployeesDansSonZone(zoneDeReception, "listeEmployeesZoneReception");
+    affichierEmployeesDansSonZone(zoneDePersonnel, "listeEmployeesZonePersonnel");
+    affichierEmployeesDansSonZone(zoneDArchives, "listeEmployeesZoneArchives");
+}
+
 affichierEmployeesSurNonAssigne();
+ afficherToutesLesZones()

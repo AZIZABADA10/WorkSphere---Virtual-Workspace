@@ -20,7 +20,8 @@
             Employé</button>
     </header>
     <main class="col-span-6 grid-rows-8 h-full lg:col-span-9 grid grid-cols-6 lg:grid-cols-9 row-span-9 ">
-        <div id="modalFormAjoute" class="hidden fixed inset-0 bg-gray-400 bg-opacity-60 flex flex-col gap-4 items-center justify-center z-50">
+        <div id="modalFormAjoute"
+            class="hidden fixed inset-0 bg-gray-400 bg-opacity-60 flex flex-col gap-4 items-center justify-center z-50">
             <div
                 class=" bg-blue-600 p-2 rounded md:p-6  hover:bg-blue-500 hover:scale-105 transition ease-linear duration-200 overflow-y-auto w-1/4 min-w-[209px] md:min-w-[420px] lg:min-w-[420px]">
 
@@ -38,6 +39,7 @@
                     <span id="regexNom"></span>
                     <label for="">Role:</label><br>
                     <select name="" id="role" class="md:w-full rounded lg:h-8">
+                        <option value="">Choisissez un role</option>
                         <option value="Réceptionniste">Réceptionniste</option>
                         <option value="Technicien IT">Technicien IT</option>
                         <option value="Agent de sécurité">Agent de sécurité</option>
@@ -45,6 +47,7 @@
                         <option value="Personnel de nettoyage">Personnel de nettoyage</option>
                         <option value="Autre">Autre</option>
                     </select><br>
+                    <span id="regexRole"></span>
                     <label for="">Email:</label><br>
                     <input type="text" id="email" class="md:w-full rounded lg:h-8"><br>
                     <span id="regexEmail"></span>
@@ -79,25 +82,25 @@
             class="bg-gray-400 p-2 row-span-6 col-span-6 order-1 lg:row-span-8  lg:col-span-7 lg:order-2 grid grid-cols-6 grid-rows-6">
             <div class="col-span-6 row-span-6 grid grid-cols-6 grid-rows-7 gap-2">
                 <div class="col-span-6 row-span-3 grid grid-cols-8 grid-rows-4 ">
-                    <div
+                    <div id="salleConf"
                         class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed  rounded text-center ">
                         Salle de conférence
-                    <button onclick="ouvrirListeEmployes('zone_de_conference')"><i
+                        <button onclick="ouvrirListeEmployes('zone_de_conference')"><i
                                 class='bxr  bx-user-plus text-green-600'></i></button>
                         <div id="listeEmployeesZoneConference"
-                            class="flex flex-row lg:flex-col min-h-[40px] lg:min-h-[340px] overflow-x-auto lg:overflow-y-auto">
+                            class="">
                         </div>
                     </div>
                     <div class="col-span-1 "></div>
                     <div class="col-span-3 row-span-4 grid grid-cols-4 grid-rows-4 gap-2">
-                        <div
+                        <div id="salleServeur"
                             class="bg-yellow-200 border-2 border-gray-500 border-dashed rounded col-span-2 row-span-4 text-center ">
                             Salle des serveurs
                             <button onclick="ouvrirListeEmployes('zone_de_serveurs')"><i
                                     class='bxr  bx-user-plus text-green-600'></i></button>
                             <div id="listeEmployeesZoneServeurs" class="flex flex-row lg:flex lg:flex-col"></div>
                         </div>
-                        <div
+                        <div  id="salleSecurité"
                             class="bg-yellow-200 border-2 border-gray-500 border-dashed  rounded col-span-2 row-span-4 text-center">
                             Salle de sécurité
                             <button onclick="ouvrirListeEmployes('zone_de_securite')"><i
@@ -111,7 +114,7 @@
 
                 </div>
                 <div class="col-span-6 row-span-3 grid grid-cols-8 grid-rows-4 ">
-                    <div
+                    <div id="salleRéception"
                         class="col-span-4 row-span-4 bg-blue-200 border-2 border-gray-500 border-dashed rounded text-center">
                         Salle de Réception
                         <button onclick="ouvrirListeEmployes('zone_de_reception')"><i
@@ -121,7 +124,7 @@
                     </div>
                     <div class="col-span-1 "></div>
                     <div class="col-span-3 row-span-4 grid grid-cols-4 grid-rows-4 gap-2">
-                        <div
+                        <div id="sallePersonnel"
                             class=" bg-yellow-200 border-2 border-gray-500 border-dashed rounded col-span-2 row-span-4 text-center">
                             Salle personnel
                             <button onclick="ouvrirListeEmployes('zone_du_personnel')"><i
@@ -129,7 +132,7 @@
                             <div id="listeEmployeesZonePersonnel" class="flex flex-row lg:flex lg:flex-col"></div>
 
                         </div>
-                        <div
+                        <div id="salleDarchives"
                             class="bg-yellow-200 border-2 border-gray-500 border-dashed rounded col-span-2 row-span-4 text-center">
                             Salle d'archives
                             <button onclick="ouvrirListeEmployes('zone_d_archives')"><i
