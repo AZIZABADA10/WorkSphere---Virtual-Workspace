@@ -412,4 +412,5 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
     affichierEmployeesSurNonAssigne();
 }
 
+
 affichierEmployeesSurNonAssigne();
