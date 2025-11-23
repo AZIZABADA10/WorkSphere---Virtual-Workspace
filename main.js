@@ -263,8 +263,8 @@ function affichierEmployeesSurNonAssigne() {
             carteEmplo.classList.add('bg-white', 'rounded', 'p-1', 'm-1')
             carteEmplo.innerHTML = `
                 <div class="flex bg-white ">
-                <img src="${e.url}" class="w-10 h-10 rounded-full">
-                <div class="ml-2">
+                    <img src="${e.url}" class="w-10 h-10 rounded-full cursor-pointer" onclick="ouvrirModalDetailsEmployee(${e.id})">
+                    <div class="ml-2">
                     <h4 class="font-semibold">${e.nom}</h4>
                     <p class="text-gray-500">${e.role}</p>
                 </div>
@@ -339,7 +339,7 @@ function ouvrirListeEmployes(zone) {
             contenuModal += `        
                 <div class="flex justify-between items-center gap-4 border p-2 rounded-xl mb-2 hover:bg-gray-50 transition">
                     <div class="flex items-center gap-3">
-                        <img src="${em.url}"  class="w-10 h-10 rounded-full object-cover">
+                         <img src="${em.url}" class="w-10 h-10 rounded-full cursor-pointer" onclick="ouvrirModalDetailsEmployee(${em.id})">
                         <div>
                             <p class="font-semibold text-gray-800">${em.nom}</p>
                             <p class="text-sm text-gray-500">${em.email}</p>
@@ -439,7 +439,7 @@ function affichierEmployeesDansSonZone(listeDeZone, IdZoneSurHtml) {
         cartEmp.innerHTML = `
             <div class="bg-white grow rounded-full flex justify-between w-36 items-center mb-2 p-1">
                     <div class="flex gap-2">
-                        <img src="${e.url}" class="w-8 h-8 rounded-full">
+                         <img src="${e.url}" class="w-10 h-10 rounded-full cursor-pointer" onclick="ouvrirModalDetailsEmployee(${e.id})">
                         <p class="font-semibold">${e.nom}</p>
                     </div>
                     <button class="text-red-600" onclick="retirerEmploye(${e.id}, '${IdZoneSurHtml}')">X</button>
@@ -450,8 +450,6 @@ function affichierEmployeesDansSonZone(listeDeZone, IdZoneSurHtml) {
     })
 
 }
-
-
 
 
 function retirerEmploye(idARetirer, zoneHtml) {
@@ -532,14 +530,56 @@ function validationColorDuZone() {
     zones.forEach(zone => {
         const divZone = document.getElementById(zone.idHtml);
         if (zone.liste.length === 0) {
-            divZone.classList.add('bg-red-300'); 
+            divZone.classList.add('bg-red-300');
         } else {
-            divZone.classList.remove('bg-red-300');  
+            divZone.classList.remove('bg-red-300');
         }
     });
 }
 
 
+function ouvrirModalDetailsEmployee(employeeId) {
+    const employees = JSON.parse(localStorage.getItem('employees')) || [];
+    const employeeAafficheer = employees.find(e => e.id === employeeId);
+
+    const modal = document.createElement('div');
+    modal.id = 'modalDetailsEmployee';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+
+    modal.innerHTML = `
+        <div class="bg-white rounded-lg w-96 p-4 relative">
+            <button onclick="fermerModalDetailsEmployee()" 
+                class="absolute top-2 right-2 text-red-600 text-xl font-bold">X</button>
+            <div class="flex flex-col items-center gap-2">
+                <div class="w-full" >
+                    <img src="${employeeAafficheer.url}" class="w-30  ml-24 border-2 rounded-full h-30 shadow-md object-cover">
+                    <h2 class="text-xl mt-6 font-bold">Nom: ${employeeAafficheer.nom}</h2>
+                    <p class="text-gray-600"><b>Role:</b> ${employeeAafficheer.role}</p>
+                    <p class="text-gray-600"><b>Email:</b> ${employeeAafficheer.email}</p>
+                    <p class="text-gray-600"><b>Téléphone:</b> ${employeeAafficheer.telephone}</p>
+                    <h3 class="font-semibold mt-2">Expériences:</h3>
+                </div>
+
+                <div class="w-full max-h-48 overflow-y-auto border p-2 rounded">
+                    ${employeeAafficheer.experiences.length > 0 ? employeeAafficheer.experiences.map(exp => `
+                        <div class="mb-2">
+                            <p class="font-semibold">${exp.titre} - ${exp.entreprise}</p>
+                            <p class="text-sm text-gray-500">${exp.description}</p>
+                            <p class="text-sm text-gray-500">${exp.dateDebut} a ${exp.dateFin}</p>
+                        </div>
+                    `).join('') : `<p class="text-gray-500">Aucune expérience</p>`}
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+function fermerModalDetailsEmployee() {
+    const modal = document.getElementById('modalDetailsEmployee');
+    if (modal) modal.remove();
+}
 
 
 affichierEmployeesSurNonAssigne();
