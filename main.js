@@ -31,6 +31,12 @@ function fermerModal() {
 /** recuperation des donnee a partir de localStorage */
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
+let zoneDeConference = JSON.parse(localStorage.getItem('zoneDeConference')) || [];
+let zoneDeServeurs = JSON.parse(localStorage.getItem('zoneDeServeurs')) || [];
+let zoneDeSecurite = JSON.parse(localStorage.getItem('zoneDeSecurite')) || [];
+let zoneDeReception = JSON.parse(localStorage.getItem('zoneDeReception')) || [];
+let zoneDePersonnel = JSON.parse(localStorage.getItem('zoneDePersonnel')) || [];
+let zoneDArchives = JSON.parse(localStorage.getItem('zoneDArchives')) || [];
 
 
 let experiencesTem = []
@@ -369,16 +375,7 @@ function fermerListeEmployes() {
     modal.remove();
 }
 
-
-let zoneDeConference = [];
-let zoneDeServeurs = [];
-let zoneDeSecurite = [];
-let zoneDeReception = [];
-let zoneDePersonnel = [];
-let zoneDArchives = [];
-
 function assignerEmploye(idEmplAassigner, zoneAassiger) {
-
     let employees = JSON.parse(localStorage.getItem('employees')) || [];
     let indexEmployeeAAssigner = employees.findIndex(e => e.id === idEmplAassigner);
     employees[indexEmployeeAAssigner].zoneActuelle = zoneAassiger;
@@ -386,71 +383,33 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
 
     switch (zoneAassiger) {
         case "zone_de_conference":
-            zoneDeConference.push(EmployeeAAssigner);
-            console.log(zoneDeConference);
+            zoneDeConference.push(employees[indexEmployeeAAssigner]);
+            localStorage.setItem('zoneDeConference', JSON.stringify(zoneDeConference))
             break;
         case "zone_de_serveurs":
-            zoneDeServeurs.push(EmployeeAAssigner);
+            zoneDeServeurs.push(employees[indexEmployeeAAssigner]);
+            localStorage.setItem('zoneDeServeurs', JSON.stringify(zoneDeServeurs))
             break;
         case "zone_de_securite":
-            zoneDeSecurite.push(EmployeeAAssigner);
+            zoneDeSecurite.push(employees[indexEmployeeAAssigner]);
+            localStorage.setItem('zoneDeSecurite', JSON.stringify(zoneDeSecurite))
             break;
         case "zone_de_reception":
-            zoneDeReception.push(EmployeeAAssigner);
+            zoneDeReception.push(employees[indexEmployeeAAssigner]);
+            localStorage.setItem('zoneDeReception', JSON.stringify(zoneDeReception))
             break;
         case "zone_du_personnel":
-            zoneDePersonnel.push(EmployeeAAssigner);
+            zoneDePersonnel.push(employees[indexEmployeeAAssigner]);
+            localStorage.setItem('zoneDePersonnel', JSON.stringify(zoneDePersonnel))
             break;
         case "zone_d_archives":
-            zoneDArchives.push(EmployeeAAssigner);
+            zoneDArchives.push(employees[indexEmployeeAAssigner]);
+            localStorage.setItem('zoneDArchives', JSON.stringify(zoneDArchives))
             break;
 
     }
     fermerListeEmployes();
     affichierEmployeesSurNonAssigne();
 }
-
-// function assignerEmploye(idEmplAassigner, zoneAassiger) {
-//     let employees = JSON.parse(localStorage.getItem('employees')) || [];
-//     const employeeIndex = employees.findIndex(e => e.id === idEmplAassigner);
-
-
-//     const employee = employees[employeeIndex];
-
-//     employees[employeeIndex].zoneActuelle = zoneAassiger;
-//     localStorage.setItem('employees', JSON.stringify(employees));
-
-//     switch (zoneAassiger) {
-//         case "zone_de_conference":
-//             zoneDeConference.push(employee);
-//             console.log('Zone de conférence:', zoneDeConference);
-//             break;
-//         case "zone_de_serveurs":
-//             zoneDeServeurs.push(employee);
-//             console.log('Zone de serveurs:', zoneDeServeurs);
-//             break;
-//         case "zone_de_securite":
-//             zoneDeSecurite.push(employee);
-//             console.log('Zone de sécurité:', zoneDeSecurite);
-//             break;
-//         case "zone_de_reception":
-//             zoneDeReception.push(employee);
-//             console.log('Zone de réception:', zoneDeReception);
-//             break;
-//         case "zone_du_personnel":
-//             zoneDePersonnel.push(employee);
-//             console.log('Zone du personnel:', zoneDePersonnel);
-//             break;
-//         case "zone_d_archives":
-//             zoneDArchives.push(employee);
-//             console.log('Zone d\'archives:', zoneDArchives);
-//             break;
-//     }
-
-//     // Fermer le modal
-//     fermerListeEmployes();
-//     affichierEmployeesSurNonAssigne();
-
-// }
 
 affichierEmployeesSurNonAssigne();
