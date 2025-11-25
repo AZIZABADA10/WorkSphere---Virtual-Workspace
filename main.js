@@ -633,8 +633,17 @@ function SaliareMaxNom() {
         }
 
     }
-
     return emp;
 }
 let salaire = SaliareMaxNom();
 console.log(salaire.salary);
+
+
+// Mise en situation soutenance croisé
+const app={
+"zonne1" :["drfghjbnk","dfxcgv","sdfg"],
+"zonne2" :["drfghjbnk","dfxcgv","sdfg"],
+"zonne3" :["drfghjbnk","dfxcgv","sdfg"],
+
+}
+console.log(Object.keys(app));
