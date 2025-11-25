@@ -1,4 +1,3 @@
-/** Mnupilation du DOM  */
 const modalFormAjoute = document.getElementById('modalFormAjoute');
 const formAjoute = document.getElementById('formAjoute');
 let inputUrl = document.getElementById('urlEmp');
@@ -6,7 +5,6 @@ let imageProfile = document.getElementById('imageProfile');
 let listeExperiences = document.getElementById('listeExperiences');
 let zoneListeEmployeesNonAssignes = document.getElementById('zoneListeEmployeesNonAssignes');
 
-/** Image de profile par défaut */
 inputUrl.addEventListener('input', () => {
     let url = inputUrl.value.trim();
     if (url) {
@@ -14,10 +12,7 @@ inputUrl.addEventListener('input', () => {
     } else {
         imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
     }
-})
-
-
-
+});
 
 /**Formaulaire d'ajoute d'un employee **/
 function afficherModal() {
@@ -28,10 +23,9 @@ function fermerModal() {
     formAjoute.reset();
     imageProfile.setAttribute('src', '../assets/iconParDefaut.png');
     listeExperiences.innerHTML = '';
-    experiencesTem = []
+    experiencesTem = [];
 }
 
-/** initialisation et récuperation des donnée a partir de localStorage */
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
 let zoneDeConference = JSON.parse(localStorage.getItem('zoneDeConference')) || [];
@@ -111,7 +105,7 @@ formAjoute.addEventListener('submit', (e) => {
         timer: 1000,
         showConfirmButton: false
     });
-    affichierEmployeesSurNonAssigne();
+
 });
 
 /** form dynamique pour ajouter une zone d'experience */
@@ -140,7 +134,6 @@ function ajouterZoneExperiences() {
             <div class="regexDateFin"></div>
             <div class="buttons flex justify-end mr-1">
                 <button type="button" onclick="confermerExperElement(${experElementId})"><i class='bx  bx-check-circle text-xl text-green-900'></i>  </button>
-                <button type="button" onclick="supprimerExperElemnt('${experElementId}')"><i class='bx  bx-trash text-xl text-red-900'></i> </button>
             </div>
         </div>
         `;
@@ -148,6 +141,8 @@ function ajouterZoneExperiences() {
     listeExperiences.appendChild(experElement);
     ;
 }
+
+
 /**confirmation et validation de experience */
 function confermerExperElement(idExperElementAConfermier) {
     //console.log(idExperElementAConfermier);
@@ -213,16 +208,6 @@ function confermerExperElement(idExperElementAConfermier) {
         input.classList.add('bg-gray-200', 'cursor-not-allowed');
     });
 
-    const buttonsDiv = elementAconfermer.querySelector('.buttons');
-    if (buttonsDiv) {
-        buttonsDiv.classList.add('hidden');
-    };
-
-    const messageValidation = document.createElement('div');
-    messageValidation.className = 'flex justify-end mr-1 mt-2';
-    messageValidation.innerHTML = `<span class="text-green-800 font-semibold text-lg">✓ Bien Validé</span>`;
-    elementAconfermer.appendChild(messageValidation);
-
     experience = {
         titre,
         entreprise,
@@ -232,13 +217,6 @@ function confermerExperElement(idExperElementAConfermier) {
     }
 
     experiencesTem.push(experience);
-}
-
-/**supprimer elementexper a partir de zone experience */
-function supprimerExperElemnt(idElemtExSupprimer) {
-    const elementAsupprimer = document.getElementById(`exper-${idElemtExSupprimer}`);
-    //console.log(elementAsupprimer);
-    elementAsupprimer.remove();
 }
 
 /*affichier les employee non assigee */
@@ -333,7 +311,7 @@ function ouvrirListeEmployes(zone) {
         `;
 
     if (employeeAafficher.length !== 0) {
-        //console.log('Employés trouvés:', employeeAafficher);
+        //console.log('employeeAafficher );
 
         employeeAafficher.forEach(em => {
             contenuModal += `        
@@ -377,13 +355,12 @@ function ouvrirListeEmployes(zone) {
     document.body.appendChild(listeEmployeesPossible);
 }
 
-/**Fermer modal de liste employees par chaque zone */
 function fermerListeEmployes() {
     const modal = document.getElementById('modalListeEmployees');
     modal.remove();
 }
 
-
+/** assigner un employees */
 function assignerEmploye(idEmplAassigner, zoneAassiger) {
     let employees = JSON.parse(localStorage.getItem('employees')) || [];
     let indexEmployeeAAssigner = employees.findIndex(e => e.id === idEmplAassigner);
@@ -423,20 +400,17 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
 
     if (zoneActuelle.length >= maxParZone[zoneAassiger]) {
         Swal.fire({
-            title: "Impossible d’assigner",
-            text: "Cette zone est pleine ! (max 2 employés)",
+            title: "Impossible d'assigner",
+            text: "Cette zone est pleine !",
             icon: "warning",
-            allowOutsideClick: true,
-            customClass: {
-                popup: 'swal2-popup-custom'
-            }
+            allowOutsideClick: true
         });
-
         return;
     }
 
     employees[indexEmployeeAAssigner].zoneActuelle = zoneAassiger;
     localStorage.setItem('employees', JSON.stringify(employees));
+    affichierEmployeesSurNonAssigne();
 
     switch (zoneAassiger) {
         case "zone_de_conference":
@@ -470,15 +444,14 @@ function assignerEmploye(idEmplAassigner, zoneAassiger) {
     afficherToutesLesZones();
 }
 
-
-
+/** Affichage apres lassignement */
 function affichierEmployeesDansSonZone(listeDeZone, IdZoneSurHtml) {
     const zoneEmp = document.getElementById(IdZoneSurHtml);
     zoneEmp.classList.add(
-        "flex", "flex-row", "lg:flex-col",
+        "flex", "flex-row", 'mf:flex-col',
         "min-h-[40px]", "lg:min-h-[340px]",
         "overflow-x-auto", "lg:overflow-y-auto",
-        "p-1", "m-1", "mb-2", "rounded-xl"
+        "p-1", "m-1", "sm:mb-2", "rounded-xl"
     );
     zoneEmp.innerHTML = "";
     listeDeZone.forEach(e => {
@@ -499,7 +472,7 @@ function affichierEmployeesDansSonZone(listeDeZone, IdZoneSurHtml) {
 
 }
 
-
+/** retirerEmployer a partir d'un zone */
 function retirerEmploye(idARetirer, zoneHtml) {
 
     let employees = JSON.parse(localStorage.getItem('employees')) || [];
@@ -547,6 +520,7 @@ function retirerEmploye(idARetirer, zoneHtml) {
 
 }
 
+/** affichage des zone */
 function afficherToutesLesZones() {
     affichierEmployeesDansSonZone(zoneDeConference, "listeEmployeesZoneConference");
     affichierEmployeesDansSonZone(zoneDeServeurs, "listeEmployeesZoneServeurs");
@@ -557,16 +531,7 @@ function afficherToutesLesZones() {
     validationColorDuZone();
 }
 
-// let employees = JSON.parse(localStorage.getItem('employees')) || [];
-// let idEmployye = employees.length > 0 ? Math.max(...employees.map(e => e.id)) : 0;
-// let zoneDeConference = JSON.parse(localStorage.getItem('zoneDeConference')) || [];
-// let zoneDeServeurs = JSON.parse(localStorage.getItem('zoneDeServeurs')) || [];
-// let zoneDeSecurite = JSON.parse(localStorage.getItem('zoneDeSecurite')) || [];
-// let zoneDeReception = JSON.parse(localStorage.getItem('zoneDeReception')) || [];
-// let zoneDePersonnel = JSON.parse(localStorage.getItem('zoneDePersonnel')) || [];
-// let zoneDArchives = JSON.parse(localStorage.getItem('zoneDArchives')) || [];
-
-
+/** validation de max sur zone */
 function validationColorDuZone() {
     const zones = [
         { liste: zoneDeServeurs, idHtml: 'salleServeur' },
@@ -585,7 +550,7 @@ function validationColorDuZone() {
     });
 }
 
-
+/** modal détaille employees  */
 function ouvrirModalDetailsEmployee(employeeId) {
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
     const employeeAafficheer = employees.find(e => e.id === employeeId);
@@ -599,7 +564,7 @@ function ouvrirModalDetailsEmployee(employeeId) {
                 <button onclick="fermerModalDetailsEmployee()" 
                     class="absolute top-2 right-2 text-red-600 text-xl font-bold">X</button>
                 <div class="flex flex-col items-center gap-2">
-                    <div class="w-full" >
+                    <div class="w-full" id="headerDeDeatille">
                         <img src="${employeeAafficheer.url}" class="w-30  ml-24 border-2 rounded-full h-30 shadow-md object-cover">
                         <h2 class="text-xl mt-6 font-bold">Nom: ${employeeAafficheer.nom}</h2>
                         <p class="text-gray-600"><b>Role:</b> ${employeeAafficheer.role}</p>
@@ -608,12 +573,13 @@ function ouvrirModalDetailsEmployee(employeeId) {
                         <h3 class="font-semibold mt-2">Expériences:</h3>
                     </div>
 
-                    <div class="w-full max-h-48 overflow-y-auto border p-2 rounded">
+                    <div class="w-full max-h-48 overflow-y-auto border p-2 rounded" id="experiencesDetailles">
                         ${employeeAafficheer.experiences.length > 0 ? employeeAafficheer.experiences.map(exp => `
                             <div class="mb-2">
                                 <p class="font-semibold">${exp.titre} - ${exp.entreprise}</p>
                                 <p class="text-sm text-gray-500">${exp.description}</p>
-                                <p class="text-sm text-gray-500">${exp.dateDebut} a ${exp.dateFin}</p>
+                                <p class="text-sm text-gray-500"><span class="text-black">Date début: </span>${exp.dateDebut}</p>
+                                <p class="text-sm text-gray-500"><span class="text-black">Date Fin:</span> ${exp.dateFin}</p>
                             </div>
                         `).join('') : `<p class="text-gray-500">Aucune expérience</p>`}
                     </div>
@@ -624,11 +590,51 @@ function ouvrirModalDetailsEmployee(employeeId) {
     document.body.appendChild(modal);
 }
 
+/** Fermer modal employees */
 function fermerModalDetailsEmployee() {
     const modal = document.getElementById('modalDetailsEmployee');
     if (modal) modal.remove();
 }
 
-
 affichierEmployeesSurNonAssigne();
 afficherToutesLesZones();
+
+
+
+// Mise en situation soutenance croisé
+let people = [
+    {
+        fname: "Ahmed",
+        salary: 5000.50,
+        age: 30,
+        email: "ahmed@example.com",
+    },
+    {
+        fname: "Fatima Ezzahrae",
+        salary: 6000.75,
+        age: 28,
+        email: "fatima@example.com",
+    },
+    {
+        fname: "Said",
+        salary: 4500.30,
+        age: 35,
+        email: "saeed@example.com",
+    }
+];
+
+
+function SaliareMaxNom() {
+
+    let emp = people[0].fname;
+    for (let index = 0; index < people.length; index++) {
+        if (people[index].fname > emp) {
+            emp = people[index];
+        }
+
+    }
+
+    return emp;
+}
+let salaire = SaliareMaxNom();
+console.log(salaire.salary);
